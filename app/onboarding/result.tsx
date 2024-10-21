@@ -62,30 +62,30 @@ const OnboardingResultScreen = () => {
     <GradientBackground colors={['#A7C7E7', '#FFF']}>
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.content}>
-            <Ionicons name="checkmark-circle" size={80} color="#6A92B8" style={styles.icon} />
-            <Text style={styles.title}>테스트 완료!</Text>
-            <Text style={styles.subtitle}>
-              당신의 관계 상태를 분석했습니다. 맞춤형 개선 방안을 확인해보세요.
-            </Text>
+        
+          <Ionicons name="checkmark-circle" size={60} color="#6A92B8" style={styles.icon} />
+          <Text style={styles.title}>테스트 완료!</Text>
+          <Text style={styles.subtitle}>
+            당신의 관계 상태를 분석했습니다. 맞춤형 개선 방안을 확인해보세요.
+          </Text>
 
-            <ResultCard
-              title="카테고리별 평가 결과"
-              results={Object.entries(parsedAnswers).map(([category, scores]) => ({
-                category: getCategoryLabel(category),
-                score: getAverage(scores),
-                evaluation: evaluationResults[category],
-              }))}
-            />
+          <ResultCard
+            title="카테고리별 평가 결과"
+            results={Object.entries(parsedAnswers).map(([category, scores]) => ({
+              category: getCategoryLabel(category, true),
+              score: getAverage(scores),
+              evaluation: evaluationResults[category],
+            }))}
+          />
 
-            <MissionCard title="추천 미션" mission={mission} />
+          <MissionCard title="추천 미션" mission={mission} />
 
-            <Button
-              title="시작하기"
-              onPress={handleFinish}  // router.replace('/')로 변경된 부분
-              gradientColors={['#6A92B8', '#A7C7E7']}
-            />
-          </View>
+          <Button
+            title="시작하기"
+            onPress={handleFinish}
+            gradientColors={['#4A90E2', '#4A90E2']}
+            style={styles.startButton}
+          />
         </ScrollView>
       </SafeAreaView>
     </GradientBackground>
@@ -98,27 +98,28 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  content: {
-    alignItems: 'center',
+    justifyContent: 'center', // Distribute content evenly
+    alignItems: 'center', // Center content horizontally
+    paddingHorizontal: 10, // Adjust padding as needed
   },
   icon: {
-    marginBottom: 20,
+    marginBottom: 5,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24, // Adjust title size for better fit
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 8, // Reduce margin to save space
     color: '#555',
-    paddingHorizontal: 10,
+  },
+  startButton: {
+    alignSelf: 'center',
+    width: '100%', // 버튼 너비를 적절하게 설정
   },
 });
 
