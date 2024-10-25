@@ -6,8 +6,6 @@ export default function ScenarioLayout() {
     <EmotionProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="[id]" />
-        <Stack.Screen name="ending" />
       </Stack>
     </EmotionProvider>
   );
