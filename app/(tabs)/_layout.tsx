@@ -24,11 +24,29 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+          name="affirmations"
+          options={{
+            title: "Affirmations",
+            tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon name={focused ? 'book' : 'book-outline'} color={color} />
+            ),
+          }}
+      />
+      <Tabs.Screen
+        name="weather"
+        options={{
+          title: 'Weather',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'sunny-sharp' : 'sunny-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'cog' : 'cog-outline'} color={color} />
+            <TabBarIcon name={focused ? 'settings-sharp' : 'settings-outline'} color={color} />
           ),
         }}
       />
