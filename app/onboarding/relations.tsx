@@ -1,11 +1,11 @@
-// app/onboarding/relations.tsx
-
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from '../../components/common/Button';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const IMAGE_SIZE = SCREEN_WIDTH * 0.6;  // 화면 너비의 60%로 이미지 크기 설정
 
 const relationshipTypes = [
   { id: 'partner', label: '연인' },
@@ -31,14 +31,20 @@ const RelationshipTypeScreen = () => {
   };
 
   return (
-    <LinearGradient colors={['#A7C7E7', '#6A92B8']} style={styles.gradientContainer}>
+    <LinearGradient colors={['#fff', '#fff']} style={styles.gradientContainer}>
       <SafeAreaView style={styles.container}>
         <View style={styles.contentContainer}>
-          <Text style={styles.logo}>소란</Text>
-          <Text style={styles.title}>소란에 오신 것을 환영합니다</Text>
-          <Text style={styles.subtitle}>관계 개선을 위한 첫 걸음을 함께 시작해볼까요?</Text>
+          {/* 이미지 추가 */}
+          <Image 
+            source={require('../../assets/images/splash.png')} 
+            style={styles.logoImage} 
+          />
 
-          <Text style={styles.selectTitle}>개선하고자 하는 관계를 선택하세요</Text>
+          <Text style={styles.title}>소란스러운 내면,이겨내는 나</Text>
+          <Text style={styles.subtitle}>소란과 함께 관계 개선을 위한</Text>
+          <Text style={styles.subtitle}>첫 걸음을 시작해볼까요?</Text>
+
+          <Text style={styles.selectTitle}>고민되는 관계를 선택해주세요. </Text>
           <View style={styles.typesContainer}>
             {relationshipTypes.map((type) => (
               <TouchableOpacity
@@ -60,10 +66,10 @@ const RelationshipTypeScreen = () => {
               </TouchableOpacity>
             ))}
           </View>
-          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextButtonText}>시작하기</Text>
-          </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextButtonText}>시작하기</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -72,85 +78,93 @@ const RelationshipTypeScreen = () => {
 const styles = StyleSheet.create({
   gradientContainer: {
     flex: 1,
+    //justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   container: {
+    width: '100%',
+    maxWidth: 400,
+    alignItems: 'center',
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
   },
   contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 40, // 하단 버튼과의 간격 조정
   },
-  logo: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 20,
+  logoImage: {
+    width: IMAGE_SIZE,       // 화면 너비의 60%로 이미지 너비 설정
+    height: IMAGE_SIZE,      // 화면 너비의 60%로 이미지 높이 설정
+    marginBottom: 0,
+    resizeMode: 'cover',     // 이미지가 전체 영역을 덮도록 설정
   },
   title: {
-    fontSize: 22, // 폰트 크기 조정
+    fontSize: 24,
     fontWeight: '500',
     textAlign: 'center',
-    color: '#FFFFFF',
+    color: '#666',
+    marginBottom: 20,
+    marginTop: 0,
   },
   subtitle: {
-    fontSize: 14, // 폰트 크기 조정
+    fontSize: 16,
     textAlign: 'center',
-    marginBottom: 25,
-    color: '#FFFFFF',
+    color: '#666',
+    marginBottom: 0,
   },
   selectTitle: {
     fontSize: 18,
-    color: '#FFFFFF',
-    marginBottom: 20,
+    color: '#000',
+    fontWeight:'700',
+    marginTop:50,
+    marginBottom: 50,
     textAlign: 'center',
   },
   typesContainer: {
     width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
     marginBottom: 30,
   },
   typeButton: {
-    padding: 20, // 버튼 크기 증가
-    borderRadius: 15,
-    backgroundColor: '#FFFFFF',
-    marginBottom: 20, // 버튼 간격 증가
+    width: '45%',
+    height:50,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    shadowColor: '#000', // 그림자 추가
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
+    justifyContent: 'center',
+    paddingVertical: 15,
+    borderRadius: 15,
+    backgroundColor: '#F2F5F8',
+    margin: 5,
   },
   typeButtonSelected: {
-    borderColor: '#4A90E2',
-    backgroundColor: '#A7C7E7', // 선택된 버튼 배경색 변경
+    backgroundColor: 'rgb(72, 199, 142)',
   },
   typeButtonText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#333',
   },
   typeButtonTextSelected: {
-    color: '#4A90E2',
+    color: '#fff',
   },
   nextButton: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 20, // 버튼 크기 증가
-    paddingHorizontal: 50,
-    borderRadius: 30,
+    position: 'absolute',
+    bottom: 20,
+    width: '90%',
+    height: 50,                // 고정된 높이 설정
+    borderRadius: 15,
     alignItems: 'center',
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
+    justifyContent: 'center',   // 텍스트를 버튼의 세로 중앙에 정렬
+    backgroundColor: '#FACC15', // 배경색은 원하는 색상으로 설정
     elevation: 5,
   },
+  
   nextButtonText: {
-    color: '#FFFFFF',
-    fontSize: 20, // 텍스트 크기 증가
-    fontWeight: 'bold',
+    fontWeight:700,
+    color: '#fff',
+    fontSize: 18,
   },
 });
 
