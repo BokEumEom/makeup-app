@@ -25,6 +25,18 @@ const gameOptions: GameOption[] = [
     icon: require('@/assets/animations/badge.json'),
     route: '/game/puzzle',
   },
+  {
+    title: 'Memory Game',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/memory',
+  },
+  {
+    title: 'Pazaak Game',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/pazaak',
+  },
 ];
 
 export default function GameSelectionScreen() {
@@ -93,8 +105,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerIcon: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
   listContainer: {
     paddingHorizontal: 10,

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, PanResponder, Text } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { GameProvider, useGame } from '../../context/TileContext';
+import { GameProvider, useGame } from '../../contexts/TileContext';
 import GameBoard from '../../components/puzzle/GameBoard';
 import ScoreBoard from '../../components/puzzle/ScoreBoard';
 import { Header } from '../../components/common/Header';

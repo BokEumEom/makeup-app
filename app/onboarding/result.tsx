@@ -76,17 +76,19 @@ const OnboardingResultScreen = () => {
               score: getAverage(scores),
               evaluation: evaluationResults[category],
             }))}
-          />
+          />    
+        </ScrollView>
 
+        <View style={styles.buttonContainer}>
           <MissionCard title="추천 미션" mission={mission} />
-
           <Button
             title="시작하기"
             onPress={handleFinish}
-            gradientColors={['#4A90E2', '#4A90E2']}
+            gradientColors={['#4A90E2', '#A7C7E7']}
             style={styles.startButton}
+            textStyle={styles.buttonText}
           />
-        </ScrollView>
+        </View>
       </SafeAreaView>
     </GradientBackground>
   );
@@ -117,9 +119,17 @@ const styles = StyleSheet.create({
     marginVertical: 8, // Reduce margin to save space
     color: '#555',
   },
+  buttonContainer: {
+    padding: 10,
+    backgroundColor: '#F5F5F5',
+  },
   startButton: {
-    alignSelf: 'center',
-    width: '100%', // 버튼 너비를 적절하게 설정
+    borderRadius: 25,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
 });
 

@@ -1,5 +1,6 @@
-// app/play.tsx
-export const choices = ['rock', 'paper', 'scissors'] as const; // Ensure this is exported properly
+// utils//play.tsx
+
+export const choices = ['rock', 'paper', 'scissors'] as const; // Ensure all choices are lowercase for consistency
 export type Choice = typeof choices[number];
 
 export const determineWinner = (userChoice: Choice, computerChoice: Choice): string => {

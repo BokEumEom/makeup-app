@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   title: {
     fontSize: 18,
@@ -53,8 +52,7 @@ const styles = StyleSheet.create({
   missionText: {
     fontSize: 16,
     color: '#555',
-    lineHeight: 24,
-    marginBottom: 10,
+    lineHeight: 20,
   },
   button: {
     backgroundColor: '#6A92B8',

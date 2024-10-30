@@ -4,8 +4,9 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { QuestProvider } from '../context/QuestContext';
+import { QuestProvider } from '../contexts/QuestContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -14,6 +15,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/RobotoMono-Regular.ttf'),
+    DepartureMono: require('../assets/fonts/DepartureMono-Regular.otf'),
   });
 
   useEffect(() => {
@@ -27,23 +29,27 @@ export default function RootLayout() {
   }
 
   return (
-    <QuestProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-          <Stack.Screen name="quest" options={{ headerShown: false }} />
-          <Stack.Screen
-              name="meditate"
-              options={{ headerShown: false }}
-          />
-          <Stack.Screen
-              name="(modal)/adjust-meditation-duration"
-              options={{ headerShown: false, presentation: "modal" }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
-    </QuestProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QuestProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+            <Stack.Screen name="quest" options={{ headerShown: false }} />
+            <Stack.Screen name="scenario" options={{ headerShown: false }} />
+            <Stack.Screen name="game" options={{ headerShown: false }} />
+            <Stack.Screen
+                name="meditate"
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="(modal)/adjust-meditation-duration"
+                options={{ headerShown: false, presentation: "modal" }}
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
+      </QuestProvider>
+    </GestureHandlerRootView>
   );
 }

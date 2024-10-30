@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { scenarios } from '../../constants/scenarios';
-import { useEmotionContext } from '../../context/EmotionContext';
+import { useEmotionContext } from '../../contexts/EmotionContext';
 import { EmotionBar } from '../../components/scenario/EmotionBar';
 import { Character } from '../../components/scenario/Character';
 import { Header } from '../../components/common/Header';

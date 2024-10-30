@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
-import { QuestContext } from '../../context/QuestContext';
+import { QuestContext } from '../../contexts/QuestContext';
 import { QuestCard } from '../../components/quest/QuestCard';
 import { RecommendedQuests } from '../../components/quest/RecommendedQuests';
 import { GradientBackground } from '../../components/common/GradientBackground';

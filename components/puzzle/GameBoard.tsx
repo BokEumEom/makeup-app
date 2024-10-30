@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Tile from './Tile';
-import { useGame } from '../../context/TileContext';
+import { useGame } from '../../contexts/TileContext';
 
 const GameBoard = () => {
   const { board } = useGame();

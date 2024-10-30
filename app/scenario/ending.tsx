@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useEmotionContext } from '../../context/EmotionContext';
+import { useEmotionContext } from '../../contexts/EmotionContext';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Header } from '../../components/common/Header';
 import { Button } from '../../components/common/Button';

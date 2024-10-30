@@ -3,7 +3,7 @@ import { Text, ScrollView, View, StyleSheet } from 'react-native';
 import { QuestObjective } from '../../components/quest/QuestObjective';
 import { QuestSteps } from '../../components/quest/QuestSteps';
 import { QuestRewards } from '../../components/quest/QuestRewards';
-import { QuestContext } from '../../context/QuestContext';
+import { QuestContext } from '../../contexts/QuestContext';
 import { GradientBackground } from '../../components/common/GradientBackground';
 import { Button } from '../../components/common/Button';
 import { Header } from '../../components/common/Header'; // Header 임포트

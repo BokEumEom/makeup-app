@@ -10,6 +10,7 @@ export interface Chapter {
   text: string;
   choices: Choice[];
   isEnding?: boolean; // 엔딩 여부
+  message?: string;
 }
 
 export interface Choice {

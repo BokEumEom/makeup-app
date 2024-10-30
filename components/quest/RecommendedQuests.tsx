@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { QuestContext } from '../../context/QuestContext';
+import { QuestContext } from '../../contexts/QuestContext';
 import { Button } from '../common/Button';
 import { Quest } from '../../types/quest';  // Quest 타입을 사용
 
@@ -73,7 +73,7 @@ export const RecommendedQuests = () => {
         <Button
           title="더 보기"
           onPress={loadMoreItems}
-          gradientColors={['#4A90E2', '#4A90E2']}
+          gradientColors={['#4A90E2', '#A7C7E7']}
           style={styles.loadMoreButton}
         />
       )}

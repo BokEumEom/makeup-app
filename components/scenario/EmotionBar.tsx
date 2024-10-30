@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { EmotionContext } from '../../context/EmotionContext';
+import { EmotionContext } from '../../contexts/EmotionContext';
 
 export const EmotionBar = () => {
   const { emotionState } = useContext(EmotionContext);

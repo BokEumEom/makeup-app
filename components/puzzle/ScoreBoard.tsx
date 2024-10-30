@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useGame } from '../../context/TileContext';
+import { useGame } from '../../contexts/TileContext';
 
 const ScoreBoard = () => {
   const { score } = useGame();

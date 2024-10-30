@@ -1,7 +1,7 @@
 // components/quest/QuestBadge.tsx
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { QuestContext } from '../../context/QuestContext';
+import { QuestContext } from '../../contexts/QuestContext';
 
 export const QuestBadge = () => {
   const { level, badges } = useContext(QuestContext);

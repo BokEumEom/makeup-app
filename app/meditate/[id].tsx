@@ -7,7 +7,7 @@ import { Audio } from "expo-av";
 import CustomButton from "@/components/common/CustomButton";
 
 import MEDITATION_IMAGES from "@/constants/meditation-images";
-import { TimerContext } from "@/context/TimerContext";
+import { TimerContext } from "@/contexts/TimerContext";
 import { MEDITATION_DATA, AUDIO_FILES } from "@/constants/MeditationData";
 
 const Page = () => {

@@ -1,6 +1,6 @@
 import AppGradient from "@/components/meditate/AppGradient";
 import CustomButton from "@/components/common/CustomButton";
-import { TimerContext } from "@/context/TimerContext";
+import { TimerContext } from "@/contexts/TimerContext";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useContext } from "react";

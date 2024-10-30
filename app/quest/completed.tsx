@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { QuestContext } from '../../context/QuestContext';
+import { QuestContext } from '../../contexts/QuestContext';
 import { GradientBackground } from '../../components/common/GradientBackground';
 import { Header } from '../../components/common/Header';
 import { useRouter } from 'expo-router';

@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { EmotionProvider } from '../../context/EmotionContext';
+import { EmotionProvider } from '../../contexts/EmotionContext';
 
 export default function ScenarioLayout() {
   return (
