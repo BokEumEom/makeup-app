@@ -32,10 +32,16 @@ const gameOptions: GameOption[] = [
     route: '/game/memory',
   },
   {
-    title: 'Pazaak Game',
+    title: 'Pazaak Mobile',
     description: 'Play the classic game!',
     icon: require('@/assets/animations/badge.json'),
     route: '/game/pazaak',
+  },
+  {
+    title: 'Tetris',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/tetris',
   },
 ];
 
@@ -44,7 +50,7 @@ export default function GameSelectionScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title="Choose Your Game" showBackButton />
+      <Header title="Choose Your Game" showBackButton titleColor="#000" />
       <View style={styles.headerContainer}>
         <LottieView
           source={require('@/assets/animations/game.json')}
