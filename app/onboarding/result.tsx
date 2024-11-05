@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ResultCard } from '../../components/onboarding/ResultCard';
-import { MissionCard } from '../../components/onboarding/MissionCard';
-import { GradientBackground } from '../../components/common/GradientBackground';
 import { Button } from '../../components/common/Button';
+import { GradientBackground } from '../../components/common/GradientBackground';
+import { MissionCard } from '../../components/onboarding/MissionCard';
+import { ResultCard } from '../../components/onboarding/ResultCard';
 
-import { onboardingQuestions } from '../../constants/onboardingQuestions';
 import { evaluationCriteria } from '../../constants/evaluationCriteria';
 import { missionSuggestions } from '../../constants/missionSuggestions';
+import { onboardingQuestions } from '../../constants/onboardingQuestions';
 
 import { AnswerScores, EvaluationResult } from '../../types/onboarding';
-import { evaluateScores, getAverage, suggestMission } from '../../utils/scoring';
 import { getCategoryLabel } from '../../utils/categoryLabels';
+import { evaluateScores, getAverage, suggestMission } from '../../utils/scoring';
+
 
 const OnboardingResultScreen = () => {
   const router = useRouter();
@@ -54,21 +55,23 @@ const OnboardingResultScreen = () => {
   };
 
   const handleFinish = () => {
-    console.log('Finishing onboarding, navigating to home');
-    router.replace('/'); // router.replace를 사용하여 홈으로 이동
+    router.replace('/');
   };
 
   return (
-    <GradientBackground colors={['#A7C7E7', '#FFF']}>
+    <GradientBackground colors={['#A7C7E7', '#E3F2FD']}>
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-        
-          <Ionicons name="checkmark-circle" size={60} color="#6A92B8" style={styles.icon} />
+          <Ionicons name="checkmark-circle" size={40} color="#4A90E2" style={styles.icon} />
           <Text style={styles.title}>테스트 완료!</Text>
           <Text style={styles.subtitle}>
             당신의 관계 상태를 분석했습니다. 맞춤형 개선 방안을 확인해보세요.
           </Text>
 
+          {/* Mission Suggestion (moved up) */}
+          <MissionCard title="추천 미션" mission={mission} style={styles.card} />
+
+          {/* Evaluation Results */}
           <ResultCard
             title="카테고리별 평가 결과"
             results={Object.entries(parsedAnswers).map(([category, scores]) => ({
@@ -76,15 +79,16 @@ const OnboardingResultScreen = () => {
               score: getAverage(scores),
               evaluation: evaluationResults[category],
             }))}
-          />    
+            style={styles.card}
+          />
         </ScrollView>
 
+        {/* Start Button */}
         <View style={styles.buttonContainer}>
-          <MissionCard title="추천 미션" mission={mission} />
           <Button
             title="시작하기"
             onPress={handleFinish}
-            gradientColors={['#4A90E2', '#A7C7E7']}
+            gradientColors={['#4A90E2', '#4A90E2']}
             style={styles.startButton}
             textStyle={styles.buttonText}
           />
@@ -97,34 +101,57 @@ const OnboardingResultScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'center', // Distribute content evenly
-    alignItems: 'center', // Center content horizontally
-    paddingHorizontal: 10, // Adjust padding as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   icon: {
-    marginBottom: 5,
+    marginBottom: 10,
   },
   title: {
-    fontSize: 24, // Adjust title size for better fit
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
-    marginVertical: 8, // Reduce margin to save space
+    marginBottom: 20,
     color: '#555',
   },
+  card: {
+    width: '100%',
+    marginVertical: 12,
+    borderRadius: 16,
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+  },
   buttonContainer: {
-    padding: 10,
-    backgroundColor: '#F5F5F5',
+    padding: 15,
+    backgroundColor: '#F8F8F8',
+    borderTopLeftRadius: 14,
+    borderTopRightRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
   startButton: {
-    borderRadius: 25,
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 0,
   },
   buttonText: {
     fontSize: 18,
