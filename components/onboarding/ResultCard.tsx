@@ -61,9 +61,9 @@ export const ResultCard: React.FC<ResultCardProps> = ({ title, results }) => {
             borderRadius: 16,
           },
           propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: '#ffa726',
+            r: '4',
+            strokeWidth: '1',
+            stroke: 'rgba(76, 175, 80, 1)',
           },
         }}
         bezier
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
@@ -131,25 +131,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   resultItem: {
-    marginBottom: 15,
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    paddingBottom: 10,
   },
   resultHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: 0,
   },
   resultLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    marginLeft: 10,
+    marginLeft: 6,
   },
   resultValueContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
   },
   resultValue: {
+    marginTop: 2,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -159,6 +162,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   resultDescription: {
+    marginTop: 4,
     fontSize: 14,
     color: '#777',
   },
