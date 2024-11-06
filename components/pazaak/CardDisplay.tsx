@@ -1,8 +1,7 @@
-// CardDisplay.tsx
-
+// CardDisplay.tsx (수정된 코드)
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 
 type CardDisplayProps = {
   value: number | null;
@@ -15,14 +14,21 @@ const cardWidth = screenWidth * 0.15;
 const cardHeight = cardWidth * 1.5;
 
 const CardDisplay: React.FC<CardDisplayProps> = ({ value, hidden = false, type = 'main' }) => {
-  const isEmpty = value === null;
+  const isEmpty = value === null; // 빈 슬롯인지 확인
   const shouldShowIcon = type === 'side' && hidden;
+  const cardColor = value && value < 0 ? '#EF466F' : '#2196f3';
 
   return (
-    <View style={[styles.card, isEmpty ? styles.emptySlot : styles.occupiedSlot, shouldShowIcon && styles.hiddenCard]}>
+    <View
+      style={[
+        styles.card,
+        isEmpty ? styles.emptySlot : [styles.occupiedSlot, { backgroundColor: cardColor }],
+        shouldShowIcon && styles.hiddenCard,
+      ]}
+    >
       {shouldShowIcon ? (
         <Ionicons name="diamond-sharp" style={styles.diamondIcon} />
-      ) : !isEmpty ? (
+      ) : !isEmpty ? ( // 빈 카드일 때는 아무 내용도 렌더링하지 않음
         <>
           <Text style={[styles.symbol, styles.topLeftSymbol]}>+</Text>
           <Text style={[styles.symbol, styles.bottomRightSymbol]}>+</Text>

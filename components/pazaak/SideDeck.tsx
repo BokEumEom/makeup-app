@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1b3b5a',
     borderRadius: 10,
-    marginVertical: 5,
+    // marginVertical: 5,
   },
   opponentDeck: {
-    backgroundColor: '#4b5563', // Darker background for opponent's side deck
+    // backgroundColor: '#4b5563', // Darker background for opponent's side deck
   },
   cardRow: {
     flexDirection: 'row',
