@@ -43,6 +43,12 @@ const gameOptions: GameOption[] = [
     icon: require('@/assets/animations/badge.json'),
     route: '/game/tetris',
   },
+  {
+    title: 'Brick Breaker',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/brick',
+  },
 ];
 
 export default function GameSelectionScreen() {
@@ -92,13 +98,15 @@ export default function GameSelectionScreen() {
           </Pressable>
         )}
         contentContainerStyle={styles.listContainer}
+        numColumns={2} // 2열로 설정
       />
     </View>
   );
 }
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.85;
+const CARD_WIDTH = (width * 0.5) - 15; // 2열 카드 너비 설정
+const CARD_HEIGHT = CARD_WIDTH * 0.75; // 카드 높이 설정
 
 const styles = StyleSheet.create({
   container: {
@@ -121,38 +129,43 @@ const styles = StyleSheet.create({
   },
   card: {
     width: CARD_WIDTH,
-    borderRadius: 10,
+    height: CARD_HEIGHT,
+    borderRadius: 5,
     overflow: 'hidden',
-    marginVertical: 15,
+    marginVertical: 5,
+    marginHorizontal: 5, // 카드 간 간격 조정
   },
   cardPressed: {
     opacity: 0.9,
   },
   gradient: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    flex: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
   cardContent: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
   iconContainer: {
-    marginRight: 15,
+    marginBottom: 10,
   },
   cardIcon: {
-    width: 60,
-    height: 60,
+    width: 35,
+    height: 35,
   },
   cardTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 5,
+    marginBottom: 3,
+    textAlign: 'center',
   },
   cardDescription: {
     fontSize: 14,
     color: '#f3f3f3',
-    textAlign: 'left',
+    textAlign: 'center',
+    fontFamily: 'DepartureMono',
   },
 });
