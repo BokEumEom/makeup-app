@@ -4,7 +4,7 @@ export default function OnboardingLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="relations" />
+      <Stack.Screen name="question" />
       <Stack.Screen name="result" />
     </Stack>
   );

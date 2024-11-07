@@ -1,252 +1,169 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { onboardingQuestions } from '@/constants/onboardingQuestions';
 
-const OnboardingScreen = () => {
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const IMAGE_SIZE = SCREEN_WIDTH * 0.6; // 화면 너비의 60%로 이미지 크기 설정
+
+const relationshipTypes = [
+  { id: 'partner', label: '연인' },
+  { id: 'couple', label: '부부' },
+  { id: 'family', label: '가족' },
+  { id: 'friend', label: '친구' },
+  { id: 'coworker', label: '직장 동료' },
+  { id: 'newface', label: '처음알게된 관계' },
+];
+
+const RelationshipTypeScreen = () => {
   const router = useRouter();
-  const { relationshipType } = useLocalSearchParams(); // 관계 유형 받아오기
-  const [step, setStep] = useState(1);// 초기 단계 설정 (1부터 시작)
-  const [answers, setAnswers] = useState<{ [key: number]: number }>({});
+  const [selectedType, setSelectedType] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadAnswers();
-  }, []);
-
-  const loadAnswers = async () => {
-    try {
-      const savedAnswers = await AsyncStorage.getItem('@onboarding_answers');
-      if (savedAnswers !== null) {
-        setAnswers(JSON.parse(savedAnswers));
-      }
-    } catch (error) {
-      console.error('Failed to load answers', error);
-    }
-  };
-
-  const saveAnswers = async (newAnswers: { [key: number]: number }) => {
-    try {
-      await AsyncStorage.setItem('@onboarding_answers', JSON.stringify(newAnswers));
-    } catch (error) {
-      console.error('Failed to save answers', error);
-    }
-  };
-// 다음 버튼 클릭 시 동작
   const handleNext = () => {
-    if (step < onboardingQuestions.length) {
-      setStep(step + 1);
-    } else {
-      saveAnswers(answers);
+    if (selectedType) {
       router.push({
-        pathname: '/onboarding/result',
-        params: {
-          answers: JSON.stringify(answers),
-          relationshipType: relationshipType,
-        },
+        pathname: '/(tabs)/onboarding/question',
+        params: { relationshipType: selectedType },
       });
+    } else {
+      alert('관계 유형을 선택해주세요.');
     }
-  };
- // 이전 버튼 클릭 시 동작
-  const handleBack = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
-  };
- // 슬라이더 값 변경 시 동작
-  const handleSliderChange = (value: number) => {
-    if (step <= onboardingQuestions.length) {
-      const currentQuestion = onboardingQuestions[step - 1];
-      const newAnswers = { ...answers, [currentQuestion.id]: value };
-      setAnswers(newAnswers);
-      saveAnswers(newAnswers);
-    }
-  };
-// 질문 화면 렌더링
-  const renderQuestion = () => {
-    if (step > onboardingQuestions.length) return null;
-
-    const currentQuestion = onboardingQuestions[step - 1];
-    return (
-      <View style={styles.contentContainer}>
-        {/* 상단에 말풍선 위치 */}
-        <View style={styles.speechBubble}>
-          <Text style={styles.questionText}>{currentQuestion.text}</Text>
-          <View style={styles.speechBubbleTail} />
-        </View>
-
-        {/* 슬라이더 및 버튼 */}
-        <Slider
-          style={styles.slider}
-          minimumValue={currentQuestion.min}
-          maximumValue={currentQuestion.max}
-          step={1}
-          value={answers[currentQuestion.id] ?? 5}
-          onValueChange={handleSliderChange}
-          minimumTrackTintColor="#6F5FD4"
-          maximumTrackTintColor="#D3D3D3"
-          thumbTintColor="#6F5FD4"
-        />
-        <Text style={styles.sliderValue}>{answers[currentQuestion.id] ?? 5}</Text>
-        <View style={styles.buttonContainer}>
-          {step > 1 && (
-            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-              <Ionicons name="arrow-back" size={24} color="#6F5FD4" />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity style={styles.button} onPress={handleNext}>
-            <Text style={styles.buttonText}>
-              {step === onboardingQuestions.length ? '완료' : '다음'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
   };
 
   return (
-    <ImageBackground
-  source={require('../../assets/bg/bg_question.png')}
-  style={styles.backgroundImage}
->
-  {/* 투명한 오버레이 */}
-  <View style={styles.overlay} />
+    <LinearGradient colors={['#fff', '#fff']} style={styles.gradientContainer}>
+      <SafeAreaView style={styles.container}>
+        {/* ScrollView 추가로 스크롤 가능하게 만듦 */}
+        <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+          <View style={styles.contentContainer}>
+            <Image source={require('../../assets/images/splash.png')} style={styles.logoImage} />
 
-  <SafeAreaView style={styles.safeArea}>
-    <ScrollView contentContainerStyle={styles.scrollContent}>
-      {renderQuestion()}
-    </ScrollView>
-    {step >= 1 && step <= onboardingQuestions.length && (
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBarContainer}>
-          <View
-            style={[styles.progressBar, { width: `${(step / onboardingQuestions.length) * 100}%` }]}
-          />
-        </View>
-        <Text style={styles.progressText}>{`${step} / ${onboardingQuestions.length}`}</Text>
-      </View>
-    )}
-  </SafeAreaView>
-</ImageBackground>
+            <Text style={styles.title}>소란스러운 내면, 이겨내는 나</Text>
+            <Text style={styles.subtitle}>소란과 함께 관계 개선을 위한</Text>
+            <Text style={styles.subtitle}>첫 걸음을 시작해볼까요?</Text>
+
+            <Text style={styles.selectTitle}>고민되는 관계를 선택해주세요.</Text>
+            <View style={styles.typesContainer}>
+              {relationshipTypes.map((type) => (
+                <TouchableOpacity
+                  key={type.id}
+                  style={[
+                    styles.typeButton,
+                    selectedType === type.id && styles.typeButtonSelected,
+                  ]}
+                  onPress={() => setSelectedType(type.id)}
+                >
+                  <Text
+                    style={[
+                      styles.typeButtonText,
+                      selectedType === type.id && styles.typeButtonTextSelected,
+                    ]}
+                  >
+                    {type.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* 하단 고정 버튼 */}
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Text style={styles.nextButtonText}>시작하기</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  gradientContainer: {
     flex: 1,
+    alignItems: 'center',
+    padding: 20,
+  },
+  container: {
     width: '100%',
-    height: '100%'
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject, // View를 전체 화면에 맞추기 위해
-    backgroundColor: 'rgba(255, 255, 255, 0.7)', // 흰색 투명도 0.5 (필요에 따라 조정)
-  },
-  safeArea: {
+    maxWidth: 400,
+    alignItems: 'center',
     flex: 1,
   },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 40,
-    justifyContent: 'center', // 중앙 정렬 유지
+  scrollContainer: {
+    paddingBottom: 80, // 하단 버튼과의 여백 확보
   },
   contentContainer: {
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 100, // 말풍선 아래 요소를 떨어뜨리기 위한 여백
+    paddingBottom: 20,
   },
-  speechBubble: {
-    backgroundColor: '#FAFAFF',
-    borderRadius: 20,
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    maxWidth: '90%',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#fff',
-    position: 'relative',
-    marginBottom: 30, // 슬라이더와의 간격 추가
+  logoImage: {
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
+    marginBottom: 20,
+    resizeMode: 'cover',
   },
-  speechBubbleTail: {
-    position: 'absolute',
-    bottom: -9,
-    left: '50%',
-    marginLeft: -9,
-    width: 16,
-    height: 16,
-    backgroundColor: '#fff',
-    borderLeftWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#fff',
-    transform: [{ rotate: '-45deg' }],
-  },
-  questionText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000',
-    textAlign: 'center',
-    letterSpacing:-0.75,
-  },
-  slider: {
-    width: '100%',
-    height: 40,
-    marginTop: 20, // 슬라이더와 말풍선 사이의 간격
-  },
-  sliderValue: {
+  title: {
     fontSize: 24,
-    fontWeight: '600',
-    marginTop: 10,
-    color: '#6F5FD4',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 20,
-  },
-  backButton: {
-    padding: 10,
-    marginRight: 'auto',
-  },
-  button: {
-    backgroundColor: '#6F5FD4',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#9079E9',
-    letterSpacing:-0.75,
-  },
-  buttonText: {
-    color: '#FFF',
-    fontSize: 15,
     fontWeight: '500',
+    textAlign: 'center',
+    color: '#666',
+    marginBottom: 20,
   },
-  progressContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+  subtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#666',
+    marginBottom: 0,
+  },
+  selectTitle: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: '700',
+    marginTop: 50,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  typesContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start'
+  },
+  typeButton: {
+    width: '45%',
+    height: 50,
     alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    backgroundColor: '#F2F5F8',
+    margin: 5,
   },
-  progressText: {
-    fontSize: 12, // 조금 더 작게 설정
-    color: '#6F5FD4',
+  typeButtonSelected: {
+    backgroundColor: 'rgb(72, 199, 142)',
   },
-  progressBarContainer: {
-    width: '40%',
-    height: 6, // 더 작게 설정 (기존 16에서 6으로)
-    backgroundColor: '#E0E0E0', // 연한 회색
-    borderRadius: 3, // 둥근 모서리
-    marginBottom: 5,
+  typeButtonText: {
+    fontSize: 16,
+    color: '#333',
   },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#4A90E2', // 연한 파란색 (이전 이미지 색상)
-    borderRadius: 3, // 둥근 모서리
+  typeButtonTextSelected: {
+    color: '#fff',
+  },
+  nextButton: {
+    position: 'absolute',
+    bottom: 20,
+    width: '90%',
+    paddingVertical: 15,     // paddingVertical로 버튼 높이 설정
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FACC15',
+    elevation: 5,
+  },
+  nextButtonText: {
+    fontWeight: '700',
+    color: '#fff',
+    fontSize: 18,
   },
 });
 
-export default OnboardingScreen;
+export default RelationshipTypeScreen;
