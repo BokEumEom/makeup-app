@@ -1,31 +1,29 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import PropTypes from 'prop-types';
 import { weatherConditions } from '@/constants/WeatherConditions';
 
 interface WeatherProps {
   temperature: number;
-  weather: string;
+  weather: keyof typeof weatherConditions; // 유니언 타입으로 설정
 }
 
 const Weather: React.FC<WeatherProps> = ({ weather, temperature }) => {
-  if (!weather) return null;
-
   const condition = weatherConditions[weather];
 
+  if (!condition) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>날씨 정보를 불러올 수 없습니다.</Text>
+      </View>
+    );
+  }
+
   return (
-    <ImageBackground
-      source={condition.backgroundImage}
-      style={styles.backgroundImage}
-    >
+    <ImageBackground source={condition.backgroundImage} style={styles.backgroundImage}>
       <View style={styles.weatherContainer}>
         <View style={styles.headerContainer}>
-          <MaterialCommunityIcons
-            size={72}
-            name={condition.icon}
-            color={'#fff'}
-          />
+          <MaterialCommunityIcons size={72} name={condition.icon} color="#fff" />
           <Text style={styles.tempText}>{temperature}˚</Text>
         </View>
         <View style={styles.bodyContainer}>
@@ -35,11 +33,6 @@ const Weather: React.FC<WeatherProps> = ({ weather, temperature }) => {
       </View>
     </ImageBackground>
   );
-};
-
-Weather.propTypes = {
-  temperature: PropTypes.number.isRequired,
-  weather: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -78,6 +71,15 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 24,
     color: '#fff',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 18,
+    color: 'red',
   },
 });
 

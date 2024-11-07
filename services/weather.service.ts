@@ -31,12 +31,16 @@ export const getWeather = async (lat: number, lon: number): Promise<WeatherRespo
 };
 
 export const getWeatherBackgroundImage = async () => {
-  let location = await Location.getCurrentPositionAsync({});
+  const location = await Location.getCurrentPositionAsync({});
   const lat = location.coords.latitude;
   const lon = location.coords.longitude;
 
   const weatherData = await getWeather(lat, lon);
   const weatherCondition = weatherData.weather[0].main;
 
-  return weatherConditions[weatherCondition]?.backgroundImage;
+  if (weatherCondition in weatherConditions) {
+    return weatherConditions[weatherCondition as keyof typeof weatherConditions].backgroundImage;
+  }
+
+  throw new Error('Unknown weather condition');
 };
