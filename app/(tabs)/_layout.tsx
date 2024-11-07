@@ -24,9 +24,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-          name="affirmations"
+          name="onboarding"
           options={{
-            title: "Affirmations",
+            title: "Onboarding",
             tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon name={focused ? 'book' : 'book-outline'} color={color} />
             ),

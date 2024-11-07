@@ -83,15 +83,6 @@ const dashboardData: CardData[] = [
 export default function HomeScreen() {
   const router = useRouter();
 
-  const resetOnboarding = async () => {
-    try {
-      await AsyncStorage.removeItem('@hasLaunched');
-      router.replace('/onboarding/relations');
-    } catch (error) {
-      console.error('Failed to reset onboarding status', error);
-    }
-  };
-
   return (
     <View style={styles.container}>
       {/* 인사말 섹션 */}
@@ -116,14 +107,6 @@ export default function HomeScreen() {
           <DashboardCard key={index} {...data} />
         ))}
       </View>
-
-      {/* 온보딩 다시 보기 버튼 */}
-      <Button 
-        title="온보딩 다시 보기" 
-        onPress={resetOnboarding}
-        gradientColors={['#4A90E2', '#4A90E2']} // 원하는 색상으로 설정
-        style={styles.resetButton}
-      />
     </View>
   );
 }
@@ -142,6 +125,7 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 36,
     fontWeight: 'bold',
+    fontFamily: 'NotoSansMedium',
     color: '#4A4A4A',
   },
   subtitle: {

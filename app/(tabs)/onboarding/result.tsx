@@ -4,18 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button } from '../../components/common/Button';
-import { GradientBackground } from '../../components/common/GradientBackground';
-import { MissionCard } from '../../components/onboarding/MissionCard';
-import { ResultCard } from '../../components/onboarding/ResultCard';
+import { Button } from '../../../components/common/Button';
+import { GradientBackground } from '../../../components/common/GradientBackground';
+import { MissionCard } from '../../../components/onboarding/MissionCard';
+import { ResultCard } from '../../../components/onboarding/ResultCard';
 
-import { evaluationCriteria } from '../../constants/evaluationCriteria';
-import { missionSuggestions } from '../../constants/missionSuggestions';
-import { onboardingQuestions } from '../../constants/onboardingQuestions';
+import { evaluationCriteria } from '../../../constants/evaluationCriteria';
+import { missionSuggestions } from '../../../constants/missionSuggestions';
+import { onboardingQuestions } from '../../../constants/onboardingQuestions';
 
-import { AnswerScores, EvaluationResult } from '../../types/onboarding';
-import { getCategoryLabel } from '../../utils/categoryLabels';
-import { evaluateScores, getAverage, suggestMission } from '../../utils/scoring';
+import { AnswerScores, EvaluationResult } from '../../../types/onboarding';
+import { getCategoryLabel } from '../../../utils/categoryLabels';
+import { evaluateScores, getAverage, suggestMission } from '../../../utils/scoring';
 
 
 const OnboardingResultScreen = () => {
