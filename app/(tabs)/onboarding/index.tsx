@@ -37,7 +37,7 @@ const RelationshipTypeScreen = () => {
         {/* ScrollView 추가로 스크롤 가능하게 만듦 */}
         <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           <View style={styles.contentContainer}>
-            <Image source={require('../../assets/images/splash.png')} style={styles.logoImage} />
+            <Image source={require('@/assets/images/splash.png')} style={styles.logoImage} />
 
             <Text style={styles.title}>소란스러운 내면, 이겨내는 나</Text>
             <Text style={styles.subtitle}>소란과 함께 관계 개선을 위한</Text>
