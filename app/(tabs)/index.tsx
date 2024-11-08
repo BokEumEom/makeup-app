@@ -37,11 +37,11 @@ const DashboardCard: React.FC<CardData> = ({ title, subtitle, icon, colors, link
 
 const dashboardData: CardData[] = [
   {
-    title: '상황 기록',
-    subtitle: '갈등의 순간을 기록하세요',
-    icon: 'document-text-outline',
+    title: '감정 체크',
+    subtitle: '나만의 감정 상태를 알아보세요',
+    icon: 'happy-outline',
     colors: ['#A7C7E7', '#6A92B8'],
-    link: '/situations',
+    link: '/emotions',
   },
   {
     title: 'MBTI',
@@ -52,7 +52,7 @@ const dashboardData: CardData[] = [
   },
   {
     title: '게임',
-    subtitle: '간단한 게임으로 생각을 잠시 멈추세요.',
+    subtitle: '간단한 게임으로 생각을 잠시 멈추세요',
     icon: 'rocket-outline',
     colors: ['#C3E6CB', '#8AB89E'],
     link: '/game',
