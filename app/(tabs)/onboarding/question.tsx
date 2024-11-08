@@ -109,7 +109,7 @@ const OnboardingScreen = () => {
 
   return (
     <ImageBackground
-  source={require('../../assets/bg/bg_question.png')}
+  source={require('@/assets/bg/bg_question.png')}
   style={styles.backgroundImage}
 >
   {/* 투명한 오버레이 */}
