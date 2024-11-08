@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type ResultSectionProps = {
   conclusion: string;
@@ -12,29 +13,29 @@ export default function ResultSection({ conclusion, onLearnMore }: ResultSection
   const router = useRouter();
 
   const handleGoHome = () => {
-    router.replace('/'); // 홈 화면으로 이동하는 로직
+    router.replace('/'); // Navigate to home screen
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.conclusion}>{conclusion}</Text>
-      
+
       <TouchableOpacity style={styles.button} onPress={onLearnMore}>
-        <Text style={styles.buttonText}>내면 더 알아보기</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-        style={[styles.button, styles.secondaryButton]}
-        onPress={() => router.push('/emotions')}
-      >
-        <Text style={styles.buttonText}>다른 상태 선택</Text>
+        <LinearGradient colors={['#F4A261', '#E76F51']} style={styles.gradient}>
+          <Text style={styles.buttonText}>내면 더 알아보기</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.button, styles.homeButton]}
-        onPress={handleGoHome}
-      >
-        <Text style={styles.buttonText}>홈 화면으로 이동</Text>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/emotions')}>
+        <LinearGradient colors={['#FFB4A2', '#FF8C66']} style={styles.gradient}>
+          <Text style={styles.buttonText}>다른 상태 선택</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleGoHome}>
+        <LinearGradient colors={['#FFE4C4', '#FFADAD']} style={styles.gradient}>
+          <Text style={styles.buttonText}>홈 화면으로 이동</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -45,34 +46,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#F5F5F5',
+    paddingHorizontal: 24,
+    backgroundColor: '#FFF1E6',
   },
   conclusion: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 22,
+    fontWeight: '500',
+    color: '#444',
     marginBottom: 40,
     textAlign: 'center',
     paddingHorizontal: 20,
+    lineHeight: 32,
   },
   button: {
-    width: '80%',
+    width: '85%',
+    marginBottom: 20,
+    borderRadius: 25,  // Rounded corners for a softer look
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    overflow: 'hidden',
+  },
+  gradient: {
     paddingVertical: 15,
-    borderRadius: 8,
-    backgroundColor: '#4CAF50', // Main button color (green)
+    paddingHorizontal: 15,
+    borderRadius: 25,
     alignItems: 'center',
-    marginBottom: 15,
-  },
-  secondaryButton: {
-    backgroundColor: '#1976D2', // Secondary button color (blue)
-  },
-  homeButton: {
-    backgroundColor: '#A7C7E7', // Secondary button color (blue)
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
+    textAlign: 'center',
   },
 });

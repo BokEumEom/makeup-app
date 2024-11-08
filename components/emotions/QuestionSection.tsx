@@ -1,6 +1,8 @@
 // components/emotions/QuestionSection.tsx
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Button } from '../common/Button'; // Assuming you have a common Button component with custom styles
 
 type QuestionSectionProps = {
   section: { title: string; questions: string[]; conclusions: any };
@@ -27,61 +29,63 @@ export default function QuestionSection({ section, onNext }: QuestionSectionProp
       <Text style={styles.title}>{section.title}</Text>
       <Text style={styles.question}>{section.questions[currentQuestion]}</Text>
       
-      <TouchableOpacity
-        style={[styles.button, styles.yesButton]}
+      <Button
+        title="Yes"
         onPress={() => handleAnswer(true)}
-      >
-        <Text style={styles.buttonText}>Yes</Text>
-      </TouchableOpacity>
+        gradientColors={['#4CAF50', '#66BB6A']} // Gradient for "Yes" button
+        style={styles.button}
+        textStyle={styles.buttonText}
+      />
 
-      <TouchableOpacity
-        style={[styles.button, styles.noButton]}
+      <Button
+        title="No"
         onPress={() => handleAnswer(false)}
-      >
-        <Text style={styles.buttonText}>No</Text>
-      </TouchableOpacity>
+        gradientColors={['#F44336', '#EF5350']} // Gradient for "No" button
+        style={styles.button}
+        textStyle={styles.buttonText}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
     flex: 1,
+    padding: 16,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF1E6', // Light, warm background color
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: '#333',
     marginBottom: 30,
     textAlign: 'center',
+    paddingHorizontal: 20,
+    lineHeight: 30,
   },
   question: {
     fontSize: 18,
     color: '#555',
-    marginBottom: 30,
+    marginBottom: 40,
     textAlign: 'center',
     paddingHorizontal: 20,
   },
   button: {
-    width: '70%',
-    paddingVertical: 15,
-    borderRadius: 8,
+    width: '80%',
     marginBottom: 15,
-    alignItems: 'center',
-  },
-  yesButton: {
-    backgroundColor: '#4CAF50', // Green color for "Yes"
-  },
-  noButton: {
-    backgroundColor: '#F44336', // Red color for "No"
+    borderRadius: 25, // Softer rounded corners
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    overflow: 'hidden',
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
+    textAlign: 'center',
   },
 });

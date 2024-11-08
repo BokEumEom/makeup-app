@@ -2,54 +2,96 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import LottieView from 'lottie-react-native';
 
 export default function EmotionsSelector() {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>현재 감정 상태 선택</Text>
-      
+      <View style={styles.headerContainer}>
+        <LottieView
+          source={require('@/assets/animations/game.json')}
+          autoPlay
+          loop={true}
+          style={styles.headerIcon}
+        />
+      </View>
+
+      <Text style={styles.title}>지금 나의 감정 상태는?</Text>
+
       <TouchableOpacity
-        style={[styles.button, styles.positiveButton]}
+        style={styles.card}
         onPress={() => router.push('/emotions/positiveEmotions')}
       >
-        <Text style={styles.buttonText}>긍정적 감정</Text>
+        <LinearGradient colors={['#A7D6A7', '#6EBF76']} style={styles.cardBackground}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="happy-outline" size={28} color="#fff" />
+          </View>
+          <Text style={styles.buttonText}>긍정적 감정</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, styles.sadnessButton]}
+        style={styles.card}
         onPress={() => router.push('/emotions/sadness')}
       >
-        <Text style={styles.buttonText}>슬픔/우울감</Text>
+        <LinearGradient colors={['#90CAF9', '#42A5F5']} style={styles.cardBackground}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="sad-outline" size={28} color="#fff" />
+          </View>
+          <Text style={styles.buttonText}>슬픔/우울감</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, styles.angerButton]}
+        style={styles.card}
         onPress={() => router.push('/emotions/anger')}
       >
-        <Text style={styles.buttonText}>분노/짜증</Text>
+        <LinearGradient colors={['#EF9A9A', '#E57373']} style={styles.cardBackground}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="flame-outline" size={28} color="#fff" />
+          </View>
+          <Text style={styles.buttonText}>분노/짜증</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, styles.stressButton]}
+        style={styles.card}
         onPress={() => router.push('/emotions/stress')}
       >
-        <Text style={styles.buttonText}>스트레스/압박감</Text>
+        <LinearGradient colors={['#FFCC80', '#FFA726']} style={styles.cardBackground}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="speedometer-outline" size={28} color="#fff" />
+          </View>
+          <Text style={styles.buttonText}>스트레스/압박감</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, styles.anxietyButton]}
+        style={styles.card}
         onPress={() => router.push('/emotions/anxiety')}
       >
-        <Text style={styles.buttonText}>불안/불확실감</Text>
+        <LinearGradient colors={['#B39DDB', '#9575CD']} style={styles.cardBackground}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="help-circle-outline" size={28} color="#fff" />
+          </View>
+          <Text style={styles.buttonText}>불안/불확실감</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button, styles.apathyButton]}
+        style={styles.card}
         onPress={() => router.push('/emotions/apathy')}
       >
-        <Text style={styles.buttonText}>무관심/흥미 상실</Text>
+        <LinearGradient colors={['#B0BEC5', '#78909C']} style={styles.cardBackground}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="cloud-outline" size={28} color="#fff" />
+          </View>
+          <Text style={styles.buttonText}>무관심/흥미 상실</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -61,7 +103,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#F0F8FF',
+    backgroundColor: '#FFF1E6',
+  },
+  headerContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerIcon: {
+    width: 150,
+    height: 150,
   },
   title: {
     fontSize: 24,
@@ -70,40 +121,33 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     textAlign: 'center',
   },
-  button: {
+  card: {
     width: '80%',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
     marginBottom: 20,
+    borderRadius: 5, // Increased radius for a softer look
+    overflow: 'hidden',
+    elevation: 5,
+  },
+  cardBackground: {
+    flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    paddingVertical: 25,
+    paddingHorizontal: 20,
   },
-  positiveButton: {
-    backgroundColor: '#A5D6A7', // Soft green for positive emotions
-  },
-  sadnessButton: {
-    backgroundColor: '#90CAF9', // Soft blue for sadness
-  },
-  angerButton: {
-    backgroundColor: '#EF9A9A', // Soft red for anger
-  },
-  stressButton: {
-    backgroundColor: '#FFCC80', // Soft orange for stress
-  },
-  anxietyButton: {
-    backgroundColor: '#B39DDB', // Soft purple for anxiety
-  },
-  apathyButton: {
-    backgroundColor: '#B0BEC5', // Soft gray for apathy
+  iconContainer: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    marginRight: 15,
   },
   buttonText: {
+    flex: 1,
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
+    textAlign: 'left',
   },
 });
