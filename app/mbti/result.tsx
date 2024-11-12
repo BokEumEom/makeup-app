@@ -1,12 +1,8 @@
-// app/mbti/result.tsx
-
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { calculateMBTI } from '@/utils/calculateMBTI';
 import characterMatches from '@/constants/characterMatches';
-import { Header } from '../../components/common/Header';
-import { Button } from '../../components/common/Button';
+import { calculateMBTI } from '@/utils/calculateMBTI';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const MBTIResult = () => {
   const { answers } = useLocalSearchParams();
@@ -22,13 +18,8 @@ const MBTIResult = () => {
   const mbtiType = calculateMBTI(parsedAnswers);
   const character = characterMatches.find((char) => char.type === mbtiType);
 
-  const handleReset = () => {
-    router.push('/mbti');
-  };
-
-  const handleGoHome = () => {
-    router.replace('/'); // 홈 화면으로 이동하는 로직
-  };
+  const handleReset = () => router.push('/mbti');
+  const handleGoHome = () => router.replace('/');
 
   if (!character) {
     return (
@@ -40,48 +31,31 @@ const MBTIResult = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="당신의 MBTI 유형은?" showBackButton={false} titleColor="#000" />
-
-      <Text style={styles.mbtiType}>{character.type}</Text>
-      <Image source={character.image} style={styles.image} />
-
+      <Text style={styles.mbtiType}>당신은 {character.type} 유형입니다.</Text>
       <Text style={styles.characterTitle}>{character.character}</Text>
+      <Image source={character.image} style={styles.image} />
       <Text style={styles.description}>{character.description}</Text>
 
+      {/* 좋아하는 것 나열식 */}
       <View style={styles.listContainer}>
         <Text style={styles.sectionTitle}>좋아하는 것</Text>
-        <FlatList
-          data={character.likes}
-          renderItem={({ item }) => <Text style={styles.listItem}>• {item}</Text>}
-          keyExtractor={(item, index) => `like-${index}`}
-        />
+        <Text style={styles.listItem}>{character.likes.join(', ')}</Text>
       </View>
 
+      {/* 싫어하는 것 나열식 */}
       <View style={styles.listContainer}>
         <Text style={styles.sectionTitle}>싫어하는 것</Text>
-        <FlatList
-          data={character.dislikes}
-          renderItem={({ item }) => <Text style={styles.listItem}>• {item}</Text>}
-          keyExtractor={(item, index) => `dislike-${index}`}
-        />
+        <Text style={styles.listItem}>{character.dislikes.join(', ')}</Text>
       </View>
 
       {/* 하단 버튼들 */}
       <View style={styles.buttonContainer}>
-        <Button
-            title="다시 테스트 하기"
-            onPress={handleReset}
-            gradientColors={['#4A90E2', '#A7C7E7']}
-            style={styles.button}
-            textStyle={styles.buttonText}
-          />
-        <Button
-            title="홈 화면으로 이동"
-            onPress={handleGoHome}
-            gradientColors={['#FF6347', '#FF7F50']}
-            style={styles.button}
-            textStyle={styles.buttonText}
-          />
+        <TouchableOpacity style={styles.button} onPress={handleReset}>
+          <Text style={styles.buttonText}>다시 테스트 하기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSecondary} onPress={handleGoHome}>
+          <Text style={styles.buttonText}>홈 화면으로 이동</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -91,79 +65,86 @@ export default MBTIResult;
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#f0f4f8',
+    backgroundColor: '#F0F5FA',
   },
   mbtiType: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 15,
-  },
-  image: {
-    width: 180,
-    height: 180,
-    resizeMode: 'contain',
-    borderRadius: 10,
-    marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#e0e0e0',
+    color: '#4A5568',
+    marginVertical: 10,
   },
   characterTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#4CAF50',
-    marginBottom: 10,
-    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: '700',
+    color: '#7F9CF5',
+    marginBottom: 0,
+  },
+  image: {
+    width: 250,
+    height: 250,
+    borderRadius: 20,
+    resizeMode: 'cover',
+    marginVertical: 10,
   },
   description: {
-    fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-    marginBottom: 20,
-    paddingHorizontal: 15,
+    backgroundColor: '#FFFFFF',
+    fontSize: 18,
+    color: '#4A5568',
+    padding: 20,
+    marginVertical: 10,
+    width: '90%',
   },
   listContainer: {
-    width: '100%',
-    marginVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#4CAF50',
-    borderRadius: 8,
-    paddingVertical: 5,
-    elevation: 5,
+    backgroundColor: '#FFFFFF',
+    //borderRadius: 12,
+    padding: 15,
+    marginVertical: 0,
+    width: '90%',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#4CAF50',
-    marginBottom: 10,
-    paddingLeft: 10,
+    color: '#319795',
+    marginBottom: 5,
   },
   listItem: {
     fontSize: 16,
-    color: '#333',
-    paddingVertical: 3,
-    paddingLeft: 20,
+    color: '#4A5568',
   },
   buttonContainer: {
-    padding: 5,
-    backgroundColor: '#F5F5F5',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginTop: 10,
   },
   button: {
+    flex: 1,
+    backgroundColor: '#63B3ED',
+    paddingVertical: 15,
     borderRadius: 25,
-    marginVertical: 5,
+    alignItems: 'center',
+    marginHorizontal: 8,
+  },
+  buttonSecondary: {
+    flex: 1,
+    backgroundColor: '#48BB78',
+    paddingVertical: 15,
+    borderRadius: 25,
+    alignItems: 'center',
+    marginHorizontal: 8,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
     color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
   errorText: {
     fontSize: 18,
-    color: 'red',
+    color: '#E53E3E',
+    textAlign: 'center',
   },
 });

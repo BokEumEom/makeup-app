@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Animated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
+import questions from '@/constants/mbtiQuestions';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import questions from '@/constants/mbtiQuestions';
-
+import React, { useState } from 'react';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
+import bgImage from '../../assets/bg/bg_mbti_question.png';
 const MBTISurvey = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: number }>({});
@@ -31,25 +31,38 @@ const MBTISurvey = () => {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <LinearGradient colors={['#A1C4FD', '#C2E9FB']} style={styles.background}>
+    <LinearGradient colors={['rgba(255,255,255,0.8)', 'rgba(255,255,255,0.9)']} style={styles.gradient}>
+      <ImageBackground
+      source={bgImage}
+      style={styles.background}
+      resizeMode="cover"
+      />
       <Animated.View
-        style={styles.container}
-        entering={SlideInRight.duration(300)}
-        exiting={SlideOutLeft.duration(300)}
-      >
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressBar, { width: `${progress}%` }]} />
-        </View>
-        <View style={styles.card}>
-          <Text style={styles.questionText}>{question.text}</Text>
-          <TouchableOpacity style={styles.optionButton} onPress={() => handleAnswer(question.category, 'A')}>
-            <Text style={styles.optionText}>{question.options[0]}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.optionButton} onPress={() => handleAnswer(question.category, 'B')}>
-            <Text style={styles.optionText}>{question.options[1]}</Text>
-          </TouchableOpacity>
-        </View>
-      </Animated.View>
+          style={styles.container}
+          entering={SlideInRight.duration(300)}
+          exiting={SlideOutLeft.duration(300)}
+        >
+          {/* 질문 카드 */}
+          <View style={styles.card}>
+            <Text style={styles.questionText}>{question.text}</Text>
+            <TouchableOpacity
+              style={[styles.optionButton, styles.optionButtonPrimary]}
+              onPress={() => handleAnswer(question.category, 'A')}
+            >
+              <Text style={styles.optionText}>{question.options[0]}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.optionButton, styles.optionButtonSecondary]}
+              onPress={() => handleAnswer(question.category, 'B')}
+            >
+              <Text style={styles.optionText}>{question.options[1]}</Text>
+            </TouchableOpacity>
+          </View>
+          {/* 진행 바 */}
+          <View style={styles.progressContainer}>
+            <View style={[styles.progressBar, { width: `${progress}%` }]} />
+          </View>
+        </Animated.View>
     </LinearGradient>
   );
 };
@@ -57,62 +70,83 @@ const MBTISurvey = () => {
 export default MBTISurvey;
 
 const styles = StyleSheet.create({
-  background: {
+  gradient: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+background: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  opacity: 0.6,
+},
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    width: '90%',
   },
   progressContainer: {
-    height: 5,
-    width: '100%',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
-    marginBottom: 20,
+    height: 10,
+    width: '80%',
+    backgroundColor: '#E0E8F0',
+    borderRadius: 10,
+    marginBottom: 10,
+    overflow: 'hidden',
   },
   progressBar: {
     height: '100%',
-    backgroundColor: '#4CAF50',
-    borderRadius: 5,
+    backgroundColor: '#A1C4FD',
+    borderRadius: 10,
   },
   card: {
     width: '100%',
-    padding: 20,
-    borderRadius: 15,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    elevation: 10,
+    padding: 30,
+    borderRadius: 20,
     alignItems: 'center',
+    //backgroundColor: '#FFFFFF',
+
   },
   questionText: {
+    padding:20,
+    backgroundColor: '#000',
+    borderRadius: 10,
+    opacity: 0.7,
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: '700',
+    color: '#fff',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   optionButton: {
     width: '100%',
-    padding: 15,
-    backgroundColor: '#4CAF50',
-    borderRadius: 10,
-    marginVertical: 10,
+    padding: 18,
+    borderRadius: 15,
+    marginVertical: 4,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  optionButtonPrimary: {
+    borderWidth: 1,
+    borderColor: '#fff',
+    backgroundColor: '#FFFFFF',
+  },
+  optionButtonSecondary: {
+    borderWidth: 1,
+    borderColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   optionText: {
-    color: '#fff',
+    color: '#000',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
   },
 });
