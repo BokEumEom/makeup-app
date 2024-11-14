@@ -26,6 +26,9 @@ export default function TabLayout() {
         require('@/assets/images/weather/drizzle.png'),
         require('@/assets/images/weather/haze.png'),
         require('@/assets/images/weather/mist.png'),
+        require('@/assets/bg/bg_mbti_question.png'),
+        require('@/assets/bg/bg_question.png'),
+        require('@/assets/images/splash.png'),
       ];
       await cacheImages(images);
       setIsReady(true);
