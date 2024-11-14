@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import { Button } from '../../components/common/Button';
+import WeatherWidget from '@/components/weather/WeatherWidget';
 
 const { width } = Dimensions.get('window');
 const CARD_MARGIN = 10;
@@ -87,9 +86,12 @@ export default function HomeScreen() {
     <View style={styles.container}>
       {/* 인사말 섹션 */}
       <View style={styles.header}>
-        <Text style={styles.logo}>소란</Text>
-        <Text style={styles.subtitle}>소란 속에서 평온을 찾으세요</Text>
-        <Text style={styles.welcomeText}>오늘은 어떤 기록을 남기시겠어요?</Text>
+        <View>
+          <Text style={styles.logo}>소란</Text>
+          <Text style={styles.subtitle}>소란 속에서 평온을 찾으세요</Text>
+          <Text style={styles.welcomeText}>오늘은 어떤 기록을 남기시겠어요?</Text>
+        </View>
+        <WeatherWidget /> {/* 날씨 위젯 추가 */}
       </View>
 
       {/* 개선 진행 상황 섹션 */}
@@ -119,7 +121,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   header: {
+    flexDirection: 'row', // Row로 변경하여 우측에 날씨 위젯 추가
     alignItems: 'center',
+    justifyContent: 'space-between', // 두 개의 요소를 양 끝에 배치
     marginBottom: 30,
   },
   logo: {

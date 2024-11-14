@@ -67,15 +67,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="weather"
-        options={{
-          title: '날씨',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'sunny-sharp' : 'sunny-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="wallpaper"
         options={{
           title: '배경화면',
