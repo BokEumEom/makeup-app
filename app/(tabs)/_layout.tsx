@@ -76,9 +76,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="setting"
         options={{
-          title: '찾기',
+          title: '세팅',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'settings-sharp' : 'settings-outline'} color={color} />
           ),
