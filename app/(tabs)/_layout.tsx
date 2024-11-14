@@ -76,6 +76,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="wallpaper"
+        options={{
+          title: '배경화면',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'images' : 'images-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="setting"
         options={{
           title: '세팅',
