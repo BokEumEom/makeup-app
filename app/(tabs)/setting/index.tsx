@@ -1,10 +1,13 @@
+// app/(tabs)/setting/index.tsx
 import React, { useState } from 'react';
 import { View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
-import { Header } from '@/components/common/Header'; // Adjust the import path as needed
+import { Header } from '@/components/common/Header'; // Ensure this path is correct
+import { useRouter } from 'expo-router';
 
 const SettingsScreen = () => {
   const [sleepSetting, setSleepSetting] = useState(false);
   const [personalAlert, setPersonalAlert] = useState(false);
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -14,6 +17,7 @@ const SettingsScreen = () => {
         titleColor="#333333" 
       />
 
+      {/* Settings items */}
       <View style={styles.item}>
         <Text style={styles.label}>잠금 설정</Text>
         <Switch
@@ -31,6 +35,7 @@ const SettingsScreen = () => {
         />
       </View>
 
+      {/* Navigation options */}
       <TouchableOpacity style={styles.item}>
         <Text style={styles.label}>다크모드/라이트모드</Text>
       </TouchableOpacity>
@@ -43,11 +48,12 @@ const SettingsScreen = () => {
         <Text style={styles.label}>카드 위치 변경</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item}>
+      {/* Navigate to the Music Setting Screen */}
+      <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/music')}>
         <Text style={styles.label}>음악 변경</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/font')}>
         <Text style={styles.label}>폰트 변경</Text>
       </TouchableOpacity>
 
@@ -55,9 +61,10 @@ const SettingsScreen = () => {
         <Text style={styles.label}>모든 기록 삭제하기</Text>
       </TouchableOpacity>
 
+      {/* Footer with version */}
       <View style={styles.footer}>
         <Text style={styles.footerLabel}>나의 Soran 버전</Text>
-        <Text style={styles.versionText}>1.2.15</Text>
+        <Text style={styles.versionText}>0.0.1</Text>
       </View>
 
       <TouchableOpacity style={styles.item}>
