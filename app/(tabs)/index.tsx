@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
 import WeatherWidget from '@/components/weather/WeatherWidget';
 
 const { width } = Dimensions.get('window');
@@ -80,8 +79,6 @@ const dashboardData: CardData[] = [
 ];
 
 export default function HomeScreen() {
-  const router = useRouter();
-
   return (
     <View style={styles.container}>
       {/* 인사말 섹션 */}
@@ -101,6 +98,19 @@ export default function HomeScreen() {
           <View style={styles.progress} />
         </View>
         <Text style={styles.progressText}>45% 완료</Text>
+
+        {/* 퇴사 게이지 배너 */}
+        <Link href="/resignation" asChild>
+          <TouchableOpacity style={styles.resignationBanner}>
+            <LinearGradient colors={['#E6D7C3', '#B8A78A']} style={styles.bannerBackground}>
+              <Ionicons name="exit-outline" size={40} color="#fff" style={styles.bannerIcon} />
+              <View>
+                <Text style={styles.bannerTitle}>퇴사 고민 중이신가요?</Text>
+                <Text style={styles.bannerSubtitle}>퇴사 게이지</Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        </Link>
       </View>
 
       {/* 대시보드 섹션 */}
@@ -121,10 +131,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   header: {
-    flexDirection: 'row', // Row로 변경하여 우측에 날씨 위젯 추가
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // 두 개의 요소를 양 끝에 배치
-    marginBottom: 30,
+    justifyContent: 'space-between',
+    marginBottom: 15,
   },
   logo: {
     fontSize: 36,
@@ -142,7 +152,7 @@ const styles = StyleSheet.create({
     color: '#4A4A4A',
   },
   progressContainer: {
-    marginBottom: 30,
+    marginBottom: 10,
   },
   progressTitle: {
     fontSize: 16,
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   progress: {
-    width: '45%',  // 진행률에 맞춰 동적으로 설정
+    width: '45%',
     height: '100%',
     backgroundColor: '#4A90E2',
   },
@@ -165,6 +175,34 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 14,
     color: '#4A4A4A',
+  },
+  resignationBanner: {
+    marginTop: 20,
+    borderRadius: 20,
+    overflow: 'hidden',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  bannerBackground: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#E6D7C3',
+  },
+  bannerIcon: {
+    marginRight: 15,
+  },
+  bannerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  bannerSubtitle: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.8)',
   },
   grid: {
     flexDirection: 'row',
@@ -174,7 +212,7 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
     aspectRatio: 1.2,
-    marginBottom: 20,
+    marginBottom: 10,
     borderRadius: 20,
     overflow: 'hidden',
     elevation: 3,
@@ -208,8 +246,5 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     fontSize: 12,
     color: 'rgba(255, 255, 255, 0.8)',
-  },
-  resetButton: {
-    alignSelf: 'center',
   },
 });
