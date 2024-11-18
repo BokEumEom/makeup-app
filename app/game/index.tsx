@@ -76,12 +76,12 @@ export default function GameSelectionScreen() {
     <View style={styles.container}>
       <Header title="Choose Your Game" showBackButton titleColor="#000" />
       <View style={styles.headerContainer}>
-        <LottieView
+        {/* <LottieView
           source={require('@/assets/animations/game.json')}
           autoPlay
           loop={true}
           style={styles.headerIcon}
-        />
+        /> */}
       </View>
 
       <FlatList

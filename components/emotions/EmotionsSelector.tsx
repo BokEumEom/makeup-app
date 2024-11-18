@@ -2,14 +2,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
-
-// Importing PNG images
-import angerIcon from '@/assets/emotions/anger.png';
-import positiveIcon from '@/assets/emotions/positive.png';
-import sadIcon from '@/assets/emotions/sad.png';
 
 export default function EmotionsSelector() {
   const router = useRouter();
@@ -17,12 +12,12 @@ export default function EmotionsSelector() {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <LottieView
+        {/* <LottieView
           source={require('@/assets/animations/game.json')}
           autoPlay
           loop={true}
           style={styles.headerIcon}
-        />
+        /> */}
       </View>
 
       <Text style={styles.title}>지금 나의 감정 상태는?</Text>
@@ -33,7 +28,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#A7D6A7', '#6EBF76']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Image source={positiveIcon} style={styles.iconImage} />
+            <MaterialCommunityIcons name="emoticon-happy-outline" size={28} color="#fff" />
           </View>
           <Text style={styles.buttonText}>긍정적 감정</Text>
         </LinearGradient>
@@ -45,7 +40,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#90CAF9', '#42A5F5']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Image source={sadIcon} style={styles.iconImage} />
+            <MaterialCommunityIcons name="emoticon-cry-outline" size={28} color="#fff" />
           </View>
           <Text style={styles.buttonText}>슬픔/우울감</Text>
         </LinearGradient>
@@ -57,7 +52,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#EF9A9A', '#E57373']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Image source={angerIcon} style={styles.iconImage} />
+            <MaterialCommunityIcons name="emoticon-angry-outline" size={28} color="#fff" />
           </View>
           <Text style={styles.buttonText}>분노/짜증</Text>
         </LinearGradient>
@@ -69,7 +64,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#FFCC80', '#FFA726']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Ionicons name="speedometer-outline" size={28} color="#fff" />
+            <MaterialCommunityIcons name="emoticon-dead-outline" size={28} color="#fff" />
           </View>
           <Text style={styles.buttonText}>스트레스/압박감</Text>
         </LinearGradient>
@@ -81,7 +76,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#B39DDB', '#9575CD']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Ionicons name="help-circle-outline" size={28} color="#fff" />
+            <MaterialCommunityIcons name="emoticon-confused-outline" size={28} color="#fff" />
           </View>
           <Text style={styles.buttonText}>불안/불확실감</Text>
         </LinearGradient>
@@ -93,7 +88,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#B0BEC5', '#78909C']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Ionicons name="cloud-outline" size={28} color="#fff" />
+            <MaterialCommunityIcons name="emoticon-neutral-outline" size={28} color="#fff" />
           </View>
           <Text style={styles.buttonText}>무관심/흥미 상실</Text>
         </LinearGradient>
