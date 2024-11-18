@@ -29,7 +29,7 @@ const ScenarioListScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="시나리오 리스트" showBackButton={true} /> 
+      <Header title="시나리오 리스트" showBackButton={true} titleColor="#000" /> 
       <FlatList
         data={scenarios}
         keyExtractor={(item) => item.id.toString()}

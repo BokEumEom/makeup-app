@@ -1,6 +1,7 @@
 // utils/tetrisUtils.ts
-import { Block, Direction, Grid } from '../types';
+import { Block, Grid } from '../types';
 
+// 블록 모양 정의
 const BLOCK_SHAPES = [
   // I Block
   [
@@ -38,17 +39,18 @@ const BLOCK_SHAPES = [
   ],
 ];
 
-// Generate a random Tetris block
+// 랜덤한 테트리스 블록 생성
 export const generateRandomBlock = (): Block => {
   const shape = BLOCK_SHAPES[Math.floor(Math.random() * BLOCK_SHAPES.length)];
+  const x = Math.floor((10 - shape[0].length) / 2);
   return {
     shape,
-    x: Math.floor(10 / 2 - shape[0].length / 2), // Centered horizontally
-    y: 0, // Starts at the top
+    x,
+    y: 0, // 블록이 그리드 상단에서 시작하도록 수정
   };
 };
 
-// Check if the block can move to a specified position
+// 블록을 지정된 위치로 이동할 수 있는지 확인
 export const canMoveBlock = (grid: Grid, block: Block): boolean => {
   for (let y = 0; y < block.shape.length; y++) {
     for (let x = 0; x < block.shape[y].length; x++) {
@@ -56,12 +58,11 @@ export const canMoveBlock = (grid: Grid, block: Block): boolean => {
         const newX = block.x + x;
         const newY = block.y + y;
 
-        // Check boundaries
         if (
-          newX < 0 || // Out of left boundary
-          newX >= grid[0].length || // Out of right boundary
-          newY >= grid.length || // Out of bottom boundary
-          (newY >= 0 && grid[newY][newX]) // Collision with another block
+          newX < 0 || // 좌측 경계 밖
+          newX >= grid[0].length || // 우측 경계 밖
+          newY >= grid.length || // 하단 경계 밖
+          (newY >= 0 && grid[newY][newX]) // 다른 블록과 충돌
         ) {
           return false;
         }
@@ -71,23 +72,23 @@ export const canMoveBlock = (grid: Grid, block: Block): boolean => {
   return true;
 };
 
-// Rotate a block shape 90 degrees clockwise
+// 블록 모양을 90도 회전
 export const rotateBlockShape = (block: Block): Block => {
   const rotatedShape = block.shape[0].map((_, index) =>
-    block.shape.map(row => row[index]).reverse()
+    block.shape.map((row) => row[index]).reverse()
   );
   return { ...block, shape: rotatedShape };
 };
 
-// Place block on the grid when it reaches the bottom or collides
+// 블록을 그리드에 배치
 export const placeBlockOnGrid = (grid: Grid, block: Block): Grid => {
-  const newGrid = grid.map(row => row.slice()); // Deep copy of grid
+  const newGrid = grid.map((row) => [...row]);
   for (let y = 0; y < block.shape.length; y++) {
     for (let x = 0; x < block.shape[y].length; x++) {
       if (block.shape[y][x]) {
-        const newX = block.x + x;
         const newY = block.y + y;
-        if (newY >= 0) { // Prevent out-of-bounds placement
+        const newX = block.x + x;
+        if (newY >= 0 && newY < grid.length && newX >= 0 && newX < grid[0].length) {
           newGrid[newY][newX] = 1;
         }
       }
@@ -96,11 +97,10 @@ export const placeBlockOnGrid = (grid: Grid, block: Block): Grid => {
   return newGrid;
 };
 
-// Check and clear full lines, returning updated grid and number of lines cleared
+// 가득 찬 라인 제거 및 점수 계산
 export const checkForFullLines = (grid: Grid): { newGrid: Grid; linesCleared: number } => {
-  const rowsCleared = grid.filter(row => !row.every(cell => cell === 1));
-  const linesCleared = grid.length - rowsCleared.length;
-  const newGrid = Array(linesCleared).fill(Array(grid[0].length).fill(0)).concat(rowsCleared);
-
-  return { newGrid, linesCleared };
+  const newGrid = grid.filter((row) => row.some((cell) => cell === 0));
+  const linesCleared = grid.length - newGrid.length;
+  const emptyRows = Array(linesCleared).fill(Array(grid[0].length).fill(0));
+  return { newGrid: [...emptyRows, ...newGrid], linesCleared };
 };

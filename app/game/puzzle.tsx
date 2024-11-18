@@ -80,7 +80,7 @@ const PuzzleGame = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="2048" showBackButton />
+      <Header title="2048" showBackButton titleColor="#000" />
       <Animated.View style={[styles.gameContainer, animatedStyle]} {...panResponder.panHandlers}>
         <ScoreBoard />
         <GameBoard />

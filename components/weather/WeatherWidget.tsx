@@ -44,6 +44,8 @@ const WeatherWidget: React.FC = () => {
     );
   }
 
+  const mainWeather = data.weather && data.weather[0] ? data.weather[0].main : 'Clear';
+
   // 날씨 상태에 따른 기본 색상과 아이콘 설정
   const getWeatherStyle = (main: string) => {
     switch (main) {
@@ -68,12 +70,14 @@ const WeatherWidget: React.FC = () => {
     }
   };
 
-  const { backgroundColor, icon } = getWeatherStyle(data.weather[0].main);
+  const { backgroundColor, icon } = getWeatherStyle(mainWeather);
 
   return (
     <View style={[styles.widgetContainer, { backgroundColor }]}>
-      <MaterialCommunityIcons name={icon} size={32} color="#fff" />
-      <Text style={styles.tempText}>{data.main.temp}˚</Text>
+      {icon && (
+        <MaterialCommunityIcons name={icon} size={32} color="#fff" />
+      )}
+      <Text style={styles.tempText}>{`${data.main.temp}˚`}</Text>
     </View>
   );
 };
@@ -90,10 +94,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#fff',
     fontWeight: 'bold',
-  },
-  conditionText: {
-    fontSize: 12,
-    color: '#fff',
   },
   errorText: {
     fontSize: 14,

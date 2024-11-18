@@ -49,17 +49,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   nextBlock: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
   row: {
     flexDirection: 'row',
   },
   cell: {
-    width: 8,
-    height: 8,
+    width: 12,
+    height: 12,
     margin: 1,
     backgroundColor: '#000',
   },

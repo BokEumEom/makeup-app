@@ -79,6 +79,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="animations"
+        options={{
+          title: '애니메이션',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'play-circle' : 'play-circle-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="setting"
         options={{
           title: '세팅',

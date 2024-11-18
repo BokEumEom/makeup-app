@@ -1,28 +1,28 @@
-// app/game/pazaak/pazaak.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import LogoHeader from '@/components/pazaak/LogoHeader'; // 로고 컴포넌트 가져오기
+import LogoHeader from '@/components/pazaak/LogoHeader';
 import SideDeck from '@/components/pazaak/SideDeck';
 import GameBoard from '@/components/pazaak/GameBoard';
 import ActionBar from '@/components/pazaak/ActionBar';
 import GenericModal from '@/components/pazaak/GenericModal';
-import WelcomeModal from '@/components/pazaak/WelcomeModal'; // WelcomeModal 가져오기
+import WelcomeModal from '@/components/pazaak/WelcomeModal';
 import { PazaakGameProvider, usePazaakGame } from '@/contexts/PazaakContext';
 
 const PazaakGameScreenContent = () => {
   const router = useRouter();
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false); // Welcome Modal 상태
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const {
     gameStarted,
+    gameOver,
     playerTotalScore,
     opponentTotalScore,
     playerRoundWins,
     opponentRoundWins,
+    roundResult,
     playerCards,
     opponentCards,
     playerSideDeck,
@@ -37,18 +37,29 @@ const PazaakGameScreenContent = () => {
     handleEndTurn,
   } = usePazaakGame();
 
+  // 모달 상태 관리
   const [showTieModal, setShowTieModal] = useState(false);
   const [showWinModal, setShowWinModal] = useState(false);
   const [showLoseModal, setShowLoseModal] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
 
+  useEffect(() => {
+    if (roundResult) {
+      // 각 결과에 맞는 모달 표시
+      if (roundResult === "win") setShowWinModal(true);
+      if (roundResult === "lose") setShowLoseModal(true);
+      if (roundResult === "tie") setShowTieModal(true);
+      if (roundResult === "gameWin" || roundResult === "gameLose") setShowGameOverModal(true);
+    }
+  }, [roundResult]);
+
   const startGameWithModal = () => {
-    setShowWelcomeModal(true); // Start Game 클릭 시 Welcome Modal을 표시
+    setShowWelcomeModal(true);
   };
 
   const closeWelcomeModalAndStartGame = () => {
-    setShowWelcomeModal(false); // 모달 닫기
-    startGame(); // 게임 시작
+    setShowWelcomeModal(false);
+    startGame();
   };
 
   const quitGame = () => {
@@ -81,8 +92,12 @@ const PazaakGameScreenContent = () => {
             </TouchableOpacity>
           </View>
 
-          <SideDeck sideDeck={opponentSideDeck} type="opponent" />
+          {/* Opponent Side Deck */}
+          <View style={styles.opponentSection}>
+            <SideDeck sideDeck={opponentSideDeck} type="opponent" />
+          </View>
 
+          {/* Game Board */}
           <GameBoard
             playerCards={playerCards}
             opponentCards={opponentCards}
@@ -92,15 +107,20 @@ const PazaakGameScreenContent = () => {
             opponentWins={opponentRoundWins}
           />
 
-          <SideDeck sideDeck={playerSideDeck} onPlayCard={playSideCard} />
-          <ActionBar
-            currentTurn={currentTurn}
-            playerHasStood={playerHasStood}
-            handleStand={handleStand}
-            handleEndTurn={handleEndTurn}
-          />
+          {/* Player Side Deck and Action Bar */}
+          <View style={styles.playerSection}>
+            <SideDeck sideDeck={playerSideDeck} onPlayCard={playSideCard} />
+            <View style={styles.actionBarWrapper}>
+              <ActionBar
+                currentTurn={currentTurn}
+                playerHasStood={playerHasStood}
+                handleStand={handleStand}
+                handleEndTurn={handleEndTurn}
+              />
+            </View>
+          </View>
 
-          {/* Tie Modal */}
+          {/* Modals */}
           <GenericModal
             visible={showTieModal}
             onClose={() => setShowTieModal(false)}
@@ -108,7 +128,6 @@ const PazaakGameScreenContent = () => {
             icon="🤝"
           />
 
-          {/* Win Modal */}
           <GenericModal
             visible={showWinModal}
             onClose={() => setShowWinModal(false)}
@@ -116,7 +135,6 @@ const PazaakGameScreenContent = () => {
             icon="🎉"
           />
 
-          {/* Lose Modal */}
           <GenericModal
             visible={showLoseModal}
             onClose={() => setShowLoseModal(false)}
@@ -124,21 +142,24 @@ const PazaakGameScreenContent = () => {
             icon="😢"
           />
 
-          {/* Game Over Modal */}
           <GenericModal
             visible={showGameOverModal}
-            onClose={() => setShowGameOverModal(false)}
-            title="YOU LOSE"
+            onClose={() => {
+              setShowGameOverModal(false);
+              resetGame();  // 게임 종료 후 초기화
+            }}
+            title={roundResult === "gameWin" ? "CONGRATULATIONS! YOU WON!" : "GAME OVER"}
             message="Thanks for playing Pazaak Online. Click close to return to the main menu."
-            icon="💔"
+            icon={roundResult === "gameWin" ? "🏆" : "💔"}
             buttonText="CLOSE"
           />
         </>
       )}
+
       {/* Welcome Modal */}
       <WelcomeModal
         visible={showWelcomeModal}
-        onClose={closeWelcomeModalAndStartGame} // "LET'S GO!" 클릭 시 게임 시작
+        onClose={closeWelcomeModalAndStartGame}
       />
     </SafeAreaView>
   );
@@ -196,10 +217,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logoText: {
-    fontSize: 18,
+    fontSize: 14,
     color: '#FFD700',
     fontWeight: 'bold',
-    fontFamily: 'DepartureMono',
+    fontFamily: 'PressStart2P',
   },
   quitButton: {
     flexDirection: 'row',
@@ -207,9 +228,21 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   quitText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#FFD700',
     fontWeight: 'bold',
-    fontFamily: 'DepartureMono',
+    fontFamily: 'PressStart2P',
+  },
+  opponentSection: {
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  playerSection: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  actionBarWrapper: {
+    marginTop: 15,
+    alignItems: 'center',
   },
 });

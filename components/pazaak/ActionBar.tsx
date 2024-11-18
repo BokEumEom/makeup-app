@@ -57,16 +57,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#1b3b5a',
-    fontSize: 18,
-    fontWeight: 'bold',
-    fontFamily: 'DepartureMono',
+    fontSize: 13,
+    fontFamily: 'PressStart2P',
   },
   turnIndicator: {
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginVertical: 10,
+    // marginVertical: 10,
   },
   avatarContainer: {
     width: 60,

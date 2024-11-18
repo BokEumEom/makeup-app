@@ -1,0 +1,73 @@
+import { Image, useImage } from "@shopify/react-native-skia";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useGameOverEffect } from "@/hooks/useGameOverEffect";
+import { useBird, useBirdActions } from "@/stores/bird";
+
+interface BirdProps {}
+
+export const Bird: FC<BirdProps> = () => {
+  const { y, width, height, x } = useBird();
+  const ideal = useImage(require("@/assets/flappybird-images/bluebird-midflap.png"));
+  const goingdown = useImage(require("@/assets/flappybird-images/bluebird-downflap.png"));
+  const goingup = useImage(require("@/assets/flappybird-images/bluebird-upflap.png"));
+
+  const [birdState, setBirdState] = useState<"ideal" | "goingup" | "goingdown">(
+    "ideal"
+  );
+
+  const { resetBird } = useBirdActions();
+
+  useGameOverEffect(resetBird);
+
+  const posYRef = useRef(0);
+
+  useEffect(() => {
+    if (y < posYRef.current) {
+      setBirdState("goingup");
+    } else if (y > posYRef.current) {
+      setBirdState("goingdown");
+    } else {
+      setBirdState("ideal");
+    }
+    posYRef.current = y;
+  }, [y]);
+
+  if (!ideal) return null;
+
+  if (birdState === "goingup") {
+    return (
+      <Image
+        width={width}
+        height={height}
+        image={goingup}
+        fit="contain"
+        y={y}
+        x={x}
+      />
+    );
+  }
+
+  if (birdState === "goingdown") {
+    return (
+      <Image
+        width={width}
+        height={height}
+        image={goingdown}
+        fit="contain"
+        y={y}
+        x={x}
+      />
+    );
+  }
+
+  return (
+    <Image
+      width={width}
+      height={height}
+      image={ideal}
+      fit="contain"
+      y={y}
+      x={x}
+    />
+  );
+};

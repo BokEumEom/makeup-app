@@ -1,10 +1,15 @@
 // components/emotions/EmotionsSelector.tsx
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import LottieView from 'lottie-react-native';
+
+// Importing PNG images
+import angerIcon from '@/assets/emotions/anger.png';
+import positiveIcon from '@/assets/emotions/positive.png';
+import sadIcon from '@/assets/emotions/sad.png';
 
 export default function EmotionsSelector() {
   const router = useRouter();
@@ -28,7 +33,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#A7D6A7', '#6EBF76']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Ionicons name="happy-outline" size={28} color="#fff" />
+            <Image source={positiveIcon} style={styles.iconImage} />
           </View>
           <Text style={styles.buttonText}>긍정적 감정</Text>
         </LinearGradient>
@@ -40,7 +45,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#90CAF9', '#42A5F5']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Ionicons name="sad-outline" size={28} color="#fff" />
+            <Image source={sadIcon} style={styles.iconImage} />
           </View>
           <Text style={styles.buttonText}>슬픔/우울감</Text>
         </LinearGradient>
@@ -52,7 +57,7 @@ export default function EmotionsSelector() {
       >
         <LinearGradient colors={['#EF9A9A', '#E57373']} style={styles.cardBackground}>
           <View style={styles.iconContainer}>
-            <Ionicons name="flame-outline" size={28} color="#fff" />
+            <Image source={angerIcon} style={styles.iconImage} />
           </View>
           <Text style={styles.buttonText}>분노/짜증</Text>
         </LinearGradient>
@@ -142,6 +147,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
     marginRight: 15,
+  },
+  iconImage: {
+    width: 28,
+    height: 28,
+    resizeMode: 'contain',
   },
   buttonText: {
     flex: 1,

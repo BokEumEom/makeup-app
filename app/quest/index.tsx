@@ -24,7 +24,7 @@ export const QuestScreen = () => {
   return (
     <GradientBackground colors={['#F5F5F5', '#F5F5F5']}>
       {/* Header 컴포넌트 추가 */}
-      <Header title="퀘스트 대시보드" showBackButton={true} />
+      <Header title="퀘스트 대시보드" showBackButton={true} titleColor="#000" />
 
       <ScrollView contentContainerStyle={styles.container}>
         

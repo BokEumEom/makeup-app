@@ -49,6 +49,24 @@ const gameOptions: GameOption[] = [
     icon: require('@/assets/animations/badge.json'),
     route: '/game/brick',
   },
+  {
+    title: 'Flappy Bird',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/flappybird',
+  },
+  {
+    title: 'Shaky Shuttle',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/spaceship',
+  },
+  {
+    title: 'Water Melon',
+    description: 'Play the classic game!',
+    icon: require('@/assets/animations/badge.json'),
+    route: '/game/watermelon',
+  },
 ];
 
 export default function GameSelectionScreen() {

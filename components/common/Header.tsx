@@ -1,3 +1,4 @@
+// components/common/Header.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,13 +8,18 @@ import { useRouter } from 'expo-router';
 interface HeaderProps {
   title: string;
   showBackButton?: boolean;
+  titleColor?: string; // 텍스트 색상을 설정할 수 있는 props
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) => {
+export const Header: React.FC<HeaderProps> = ({
+  title,
+  showBackButton = true,
+  titleColor = '#FFFFFF', // 기본값 설정
+}) => {
   const router = useRouter();
 
   const handleBackPress = () => {
-    router.back(); // 뒤로 가기 기능
+    router.back();
   };
 
   return (
@@ -21,10 +27,10 @@ export const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) 
       <View style={styles.headerContainer}>
         {showBackButton && (
           <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-            <AntDesign name="leftcircleo" size={26} color="#4A4A4A" />
+            <AntDesign name="leftcircleo" size={26} color={titleColor} />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>{title}</Text>
+        <Text style={[styles.headerTitle, { color: titleColor }]}>{title}</Text>
       </View>
     </SafeAreaView>
   );
@@ -32,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) 
 
 const styles = StyleSheet.create({
   safeArea: {
-    // backgroundColor: '#4A90E2', // 헤더 배경 색상
+    // backgroundColor: '#4A90E2', // 고정된 배경색
   },
   headerContainer: {
     flexDirection: 'row',
@@ -43,12 +49,12 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    left: 15, // 버튼 위치 조정
+    left: 15,
   },
   headerTitle: {
     fontSize: 20,
-    color: '#4A4A4A',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'DepartureMono',
   },
 });

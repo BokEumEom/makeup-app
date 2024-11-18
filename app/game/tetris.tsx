@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFD700', // Yellow outer background
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
+    // padding: 10,
   },
   borderContainer: {
     width: 360,
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#B2B8A3', // LCD screen color
     borderWidth: 3,
     borderColor: '#333', // Dark outline for the screen
-    padding: 5,
-    flex: 1,
+    padding: 6,
+    // flex: 1,
   },
 });
 

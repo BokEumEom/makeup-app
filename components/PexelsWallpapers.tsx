@@ -157,7 +157,7 @@ const PexelsWallpapers = () => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View style={StyleSheet.absoluteFillObject}>
         {data?.photos?.map((photo, index) => (
-          <BackdropPhoto photo={photo} index={index} scrollX={scrollX} />
+          <BackdropPhoto key={photo.id} photo={photo} index={index} scrollX={scrollX} />
         ))}
       </View>
 

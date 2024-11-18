@@ -123,7 +123,7 @@ export default function MemoryGameScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title="Memory Game" showBackButton />
+      <Header title="Memory Game" showBackButton titleColor="#000" />
 
       <View style={styles.content}>
         <Text style={styles.scoreText}>Score: {score} | Moves: {moves}</Text>
