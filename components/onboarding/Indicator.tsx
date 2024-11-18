@@ -10,7 +10,7 @@ const _layoutTransition = LinearTransition.springify().damping(80).stiffness(200
 const _dotContainer = 24;
 const _dotSize = _dotContainer / 3;
 
-const _activeDot = "#fff";
+const _activeDot = "#000";
 const _inactiveDot = "#aaa";
 
 function Button({ children, style, ...rest }: AnimatedProps<PressableProps>) {
@@ -88,7 +88,7 @@ function PaginationIndicator({
     <Animated.View
       style={[
         {
-          backgroundColor: "#29BE56",
+          backgroundColor: "",
           height: _dotContainer,
           width: _dotContainer,
           borderRadius: _dotContainer,
