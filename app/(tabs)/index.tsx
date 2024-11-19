@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import WeatherWidget from '@/components/weather/WeatherWidget';
+import CustomText from '@/components/common/CustomText';
 
 const { width } = Dimensions.get('window');
 const CARD_MARGIN = 10;
@@ -25,8 +26,8 @@ const DashboardCard: React.FC<CardData> = ({ title, subtitle, icon, colors, link
           <Ionicons name={icon} size={24} color="#fff" />
         </View>
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>{title}</Text>
-          <Text style={styles.cardSubtitle}>{subtitle}</Text>
+          <CustomText style={styles.cardTitle}>{title}</CustomText>
+          <CustomText style={styles.cardSubtitle}>{subtitle}</CustomText>
         </View>
       </LinearGradient>
     </TouchableOpacity>
@@ -84,20 +85,21 @@ export default function HomeScreen() {
       {/* 인사말 섹션 */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.logo}>소란</Text>
-          <Text style={styles.subtitle}>소란 속에서 평온을 찾으세요</Text>
-          <Text style={styles.welcomeText}>오늘은 어떤 기록을 남기시겠어요?</Text>
+          <CustomText style={styles.logo}>소란</CustomText>
+          <CustomText style={styles.subtitle}>소란 속에서 평온을 찾으세요</CustomText>
+          <CustomText style={styles.welcomeText}>오늘은 어떤 기록을 남기시겠어요?</CustomText>
         </View>
-        <WeatherWidget /> {/* 날씨 위젯 추가 */}
+        {/* 날씨 위젯 추가 */}
+        <WeatherWidget />
       </View>
 
       {/* 개선 진행 상황 섹션 */}
       <View style={styles.progressContainer}>
-        <Text style={styles.progressTitle}>현재 개선 진행 상황</Text>
+        <CustomText style={styles.progressTitle}>현재 개선 진행 상황</CustomText>
         <View style={styles.progressBar}>
           <View style={styles.progress} />
         </View>
-        <Text style={styles.progressText}>45% 완료</Text>
+        <CustomText style={styles.progressText}>45% 완료</CustomText>
 
         {/* 퇴사 게이지 배너 */}
         <Link href="/resignation" asChild>
@@ -105,8 +107,8 @@ export default function HomeScreen() {
             <LinearGradient colors={['#E6D7C3', '#B8A78A']} style={styles.bannerBackground}>
               <Ionicons name="exit-outline" size={40} color="#fff" style={styles.bannerIcon} />
               <View>
-                <Text style={styles.bannerTitle}>퇴사 고민 중이신가요?</Text>
-                <Text style={styles.bannerSubtitle}>퇴사 게이지</Text>
+                <CustomText style={styles.bannerTitle}>퇴사 고민 중이신가요?</CustomText>
+                <CustomText style={styles.bannerSubtitle}>퇴사 게이지</CustomText>
               </View>
             </LinearGradient>
           </TouchableOpacity>

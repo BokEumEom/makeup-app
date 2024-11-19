@@ -7,16 +7,10 @@ import { Header } from '@/components/common/Header';
 import { Ionicons } from '@expo/vector-icons';
 import CustomText from '@/components/common/CustomText';
 import { useFontSettingsContext } from '@/contexts/FontSettingsContext';
+import { FONTS } from '@/constants/fonts';
 
 const FontSelectionScreen = () => {
   const { fontFamily, fontSize, updateFontFamily, updateFontSize } = useFontSettingsContext();
-
-  const fonts = [
-    '나눔스퀘어 네오',
-    '프리텐다드',
-    '스포카 한 산스 네오',
-    '넥슨 LV1 고딕',
-  ];
 
   return (
     <View style={styles.container}>
@@ -45,16 +39,16 @@ const FontSelectionScreen = () => {
       </View>
 
       <ScrollView contentContainerStyle={styles.fontList}>
-        {fonts.map((font) => (
+        {FONTS.map(({ label, value }) => (
           <TouchableOpacity
-            key={font}
+            key={value}
             style={styles.fontItem}
-            onPress={() => updateFontFamily(font)}
+            onPress={() => updateFontFamily(value)}
           >
-            <CustomText style={[styles.fontText, { fontSize, fontFamily: font, fontWeight: fontFamily === font ? 'bold' : 'normal' }]}>
-              {font}
+            <CustomText style={[styles.fontText, { fontSize, fontFamily: value }]}>
+              {label}
             </CustomText>
-            {fontFamily === font && <Ionicons name="checkmark" size={20} color="black" />}
+            {fontFamily === value && <Ionicons name="checkmark" size={20} color="black" />}
           </TouchableOpacity>
         ))}
       </ScrollView>

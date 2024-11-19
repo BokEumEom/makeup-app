@@ -4,7 +4,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -19,15 +19,14 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const [isReady, setIsReady] = useState(false);
 
   // useFonts 훅을 사용하여 폰트를 로드
   const [fontsLoaded] = useFonts({
     'DepartureMono': require('@/assets/fonts/DepartureMono-Regular.otf'),
     'NanumSquareNeo': require('@/assets/fonts/NanumSquareNeo-eHv.ttf'),
     'NEXONLv2Gothic': require('@/assets/fonts/NEXON Lv2 Gothic Medium.ttf'),
-    'NotoSansKR-Bold': require('@/assets/fonts/NotoSansKR-Bold.ttf'),
-    'NotoSansKR-Medium': require('@/assets/fonts/NotoSansKR-Medium.ttf'),
-    'NotoSansKR-Thin': require('@/assets/fonts/NotoSansKR-Thin.ttf'),
+    'NotoSansKR': require('@/assets/fonts/NotoSansKR-Medium.ttf'),
     'Orbitron': require('@/assets/fonts/Orbitron-VariableFont-wght.ttf'),
     'PressStart2P': require('@/assets/fonts/PressStart2P-Regular.ttf'),
     'RobotoMono': require('@/assets/fonts/RobotoMono-Regular.ttf'),
@@ -38,7 +37,7 @@ export default function RootLayout() {
   // 폰트 로딩 완료 시 스플래시 화면 숨김
   useEffect(() => {
     if (fontsLoaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync().then(() => setIsReady(true));
     }
   }, [fontsLoaded]);
 
