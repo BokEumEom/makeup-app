@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Svg, Circle, Polygon, Text as SvgText, Line } from 'react-native-svg';
 
 type RadarChartProps = {
-  data: { labels: string[]; values: number[] }; // 데이터: 라벨과 값
-  maxValue: number; // 최대 값
+  data: { labels: string[]; values: number[] }; // Data: Labels and values
+  maxValue: number; // Maximum value for the chart
 };
 
 const RadarChart: React.FC<RadarChartProps> = ({ data, maxValue }) => {
@@ -20,6 +20,13 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, maxValue }) => {
     return { x, y };
   };
 
+  const getLabelCoordinates = (index: number) => {
+    const angle = angleSlice * index - Math.PI / 2;
+    const x = radius + (radius + 30) * Math.cos(angle);
+    const y = radius + (radius + 30) * Math.sin(angle);
+    return { x, y };
+  };
+
   const points = values
     .map((value, index) => {
       const { x, y } = getCoordinates(value, index);
@@ -29,7 +36,6 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, maxValue }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>카테고리별 강점과 약점</Text>
       <Svg width={chartSize} height={chartSize}>
         {/* Draw Grid */}
         {[...Array(5)].map((_, i) => {
@@ -73,23 +79,35 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, maxValue }) => {
           strokeWidth="2"
         />
 
-        {/* Labels */}
+        {/* Labels and Values */}
         {labels.map((label, i) => {
-          const angle = angleSlice * i - Math.PI / 2;
-          const x = radius + (radius + 20) * Math.cos(angle);
-          const y = radius + (radius + 20) * Math.sin(angle);
+          const labelCoords = getLabelCoordinates(i);
+          const valueCoords = getCoordinates(values[i], i);
           return (
-            <SvgText
-              key={`label-${i}`}
-              x={x}
-              y={y}
-              fontSize="12"
-              fill="#333"
-              textAnchor="middle"
-              alignmentBaseline="middle"
-            >
-              {label}
-            </SvgText>
+            <React.Fragment key={`label-value-${i}`}>
+              {/* Label */}
+              <SvgText
+                x={labelCoords.x}
+                y={labelCoords.y}
+                fontSize="12"
+                fill="#333"
+                textAnchor="middle"
+                alignmentBaseline="middle"
+              >
+                {label}
+              </SvgText>
+              {/* Value */}
+              <SvgText
+                x={valueCoords.x}
+                y={valueCoords.y}
+                fontSize="10"
+                fill="rgba(63, 81, 181, 1)"
+                textAnchor="middle"
+                alignmentBaseline="middle"
+              >
+                {values[i]}
+              </SvgText>
+            </React.Fragment>
           );
         })}
       </Svg>
@@ -101,12 +119,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     marginVertical: 20,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
   },
 });
 

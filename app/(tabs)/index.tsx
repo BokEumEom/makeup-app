@@ -15,7 +15,7 @@ type CardData = {
   subtitle: string;
   icon: keyof typeof Ionicons.glyphMap;
   colors: [string, string];
-  link: string;
+  link: string | { pathname: string; params?: Record<string, string> };
 };
 
 const DashboardCard: React.FC<CardData> = ({ title, subtitle, icon, colors, link }) => (
@@ -94,26 +94,37 @@ export default function HomeScreen() {
       </View>
 
       {/* 개선 진행 상황 섹션 */}
-      <View style={styles.progressContainer}>
-        <CustomText style={styles.progressTitle}>현재 개선 진행 상황</CustomText>
-        <View style={styles.progressBar}>
-          <View style={styles.progress} />
+      <View style={styles.rowContainer}>
+        {/* Progress Section */}
+        <View style={styles.progressContainer}>
+          <CustomText style={styles.progressTitle}>현재 개선 진행 상황</CustomText>
+          <View style={styles.progressBar}>
+            <View style={styles.progress} />
+          </View>
+          <CustomText style={styles.progressText}>45% 완료</CustomText>
         </View>
-        <CustomText style={styles.progressText}>45% 완료</CustomText>
 
-        {/* 퇴사 게이지 배너 */}
-        <Link href="/resignation" asChild>
-          <TouchableOpacity style={styles.resignationBanner}>
-            <LinearGradient colors={['#E6D7C3', '#B8A78A']} style={styles.bannerBackground}>
-              <Ionicons name="exit-outline" size={40} color="#fff" style={styles.bannerIcon} />
-              <View>
-                <CustomText style={styles.bannerTitle}>퇴사 고민 중이신가요?</CustomText>
-                <CustomText style={styles.bannerSubtitle}>퇴사 게이지</CustomText>
-              </View>
-            </LinearGradient>
+        {/* Dashboard Button */}
+        <Link href="/resignation/dashboard" asChild>
+          <TouchableOpacity style={styles.dashboardButton}>
+            <Ionicons name="grid-outline" size={24} color="#fff" />
+            <CustomText style={styles.dashboardButtonText}>대시보드</CustomText>
           </TouchableOpacity>
         </Link>
       </View>
+
+      {/* 퇴사 게이지 배너 */}
+      <Link href="/resignation" asChild>
+        <TouchableOpacity style={styles.resignationBanner}>
+          <LinearGradient colors={['#E6D7C3', '#B8A78A']} style={styles.bannerBackground}>
+            <Ionicons name="exit-outline" size={40} color="#fff" style={styles.bannerIcon} />
+            <View>
+              <CustomText style={styles.bannerTitle}>퇴사 고민 중이신가요?</CustomText>
+              <CustomText style={styles.bannerSubtitle}>퇴사 게이지</CustomText>
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+      </Link>
 
       {/* 대시보드 섹션 */}
       <View style={styles.grid}>
@@ -153,19 +164,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#4A4A4A',
   },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // marginBottom: 10, // Adjust spacing
+  },
   progressContainer: {
-    marginBottom: 10,
+    width: '48%',
+    marginRight: 10, // Add spacing between progress and button
   },
   progressTitle: {
-    fontSize: 16,
+    fontSize: 14, // Reduced font size
     fontWeight: 'bold',
     color: '#4A4A4A',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   progressBar: {
-    height: 10,
+    height: 6, // Reduce height for a more compact look
     backgroundColor: '#E6E6E6',
-    borderRadius: 5,
+    borderRadius: 3,
     overflow: 'hidden',
   },
   progress: {
@@ -174,19 +192,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#4A90E2',
   },
   progressText: {
-    marginTop: 5,
-    fontSize: 14,
+    fontSize: 12, // Reduce text size
     color: '#4A4A4A',
+    marginTop: 3,
+  },
+  dashboardButton: {
+    width: '48%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#4A90E2',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    elevation: 3,
+  },
+  dashboardButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: 5,
   },
   resignationBanner: {
     marginTop: 20,
     borderRadius: 20,
     overflow: 'hidden',
     elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    marginBottom: 10,
   },
   bannerBackground: {
     flexDirection: 'row',

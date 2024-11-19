@@ -1,22 +1,25 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import Tabs from '@/components/common/Tabs'; // Tabs component
 import { BarChart, LineChart } from 'react-native-chart-kit';
-import RadarChart from '@/components/resignation/RadarChart'; // Custom RadarChart component
+import RadarChart from '@/components/resignation/RadarChart';
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function DashboardScreen() {
-  // Mock 데이터
+const DashboardScreen = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const radarData = {
     labels: ['개인 심리', '업무 환경', '대인 관계', '생활 균형'],
-    values: [7, 5, 6, 8], // 각 카테고리 점수 (0~10)
+    values: [7, 5, 6, 8],
   };
 
   const barData = {
     labels: ['평균 점수', '내 점수'],
     datasets: [
       {
-        data: [10, 14], // 평균 점수와 사용자 점수
+        data: [10, 14],
       },
     ],
   };
@@ -25,42 +28,35 @@ export default function DashboardScreen() {
     labels: ['1개월 전', '2개월 전', '3개월 전'],
     datasets: [
       {
-        data: [12, 14, 13], // 시간에 따른 점수 변화
-        color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`, // 선 색상
+        data: [12, 14, 13],
+        color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`,
       },
     ],
   };
 
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>대시보드</Text>
-
-      {/* Radar Chart */}
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>카테고리별 강점과 약점</Text>
-        <RadarChart data={radarData} maxValue={10} />
-      </View>
-
-      {/* Bar Chart */}
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>평균 점수와 내 점수 비교</Text>
+  const renderContent = () => {
+    if (selectedIndex === 0) {
+      return <RadarChart data={radarData} maxValue={10} />;
+    } else if (selectedIndex === 1) {
+      return (
         <BarChart
           data={barData}
           width={screenWidth - 40}
           height={250}
+          yAxisLabel=""
+          yAxisSuffix=" 점"
           chartConfig={{
             backgroundGradientFrom: '#fff',
             backgroundGradientTo: '#fff',
             color: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
             labelColor: () => '#333',
+            decimalPlaces: 0,
           }}
           style={styles.chart}
         />
-      </View>
-
-      {/* Line Chart */}
-      <View style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>심리 상태 변화 추이</Text>
+      );
+    } else if (selectedIndex === 2) {
+      return (
         <LineChart
           data={lineData}
           width={screenWidth - 40}
@@ -70,36 +66,52 @@ export default function DashboardScreen() {
             backgroundGradientTo: '#fff',
             color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`,
             labelColor: () => '#333',
+            decimalPlaces: 0,
           }}
           bezier
           style={styles.chart}
         />
-      </View>
-    </ScrollView>
+      );
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Tabs
+        data={[
+          { icon: 'ChartArea', label: 'Radar Chart' },
+          { icon: 'ChartBar', label: 'Bar Chart' },
+          { icon: 'ChartLine', label: 'Line Chart' },
+        ]}
+        selectedIndex={selectedIndex}
+        onChange={setSelectedIndex}
+      />
+      <Animated.View
+        key={`tab-content-${selectedIndex}`}
+        entering={FadeInRight.springify().damping(80).stiffness(200)}
+        exiting={FadeOutLeft.springify().damping(80).stiffness(200)}
+        style={styles.contentContainer}
+      >
+        {renderContent()}
+      </Animated.View>
+    </SafeAreaView>
   );
-}
+};
+
+export default DashboardScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f9fafb',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginVertical: 20,
-  },
-  chartContainer: {
-    marginBottom: 30,
+  contentContainer: {
+    flex: 1,
+    margin: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  chartTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#555',
-    marginBottom: 10,
   },
   chart: {
     borderRadius: 16,
