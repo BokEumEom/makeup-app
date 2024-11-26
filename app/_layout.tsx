@@ -2,7 +2,7 @@
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
@@ -20,6 +20,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [isReady, setIsReady] = useState(false);
+  const router = useRouter();
 
   // useFonts 훅을 사용하여 폰트를 로드
   const [fontsLoaded] = useFonts({
@@ -34,10 +35,13 @@ export default function RootLayout() {
     'SpoqaHanSansNeo': require('@/assets/fonts/SpoqaHanSansNeo-Medium.ttf'),
   });
 
-  // 폰트 로딩 완료 시 스플래시 화면 숨김
+  // 폰트 로딩 완료 시 스플래시 화면 숨김 및 /onboarding으로 리디렉션
   useEffect(() => {
     if (fontsLoaded) {
-      SplashScreen.hideAsync().then(() => setIsReady(true));
+      SplashScreen.hideAsync().then(() => {
+        setIsReady(true);
+        router.replace('/onboarding'); // 첫 화면으로 /onboarding 리디렉션
+      });
     }
   }, [fontsLoaded]);
 
