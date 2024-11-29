@@ -1,11 +1,14 @@
+// utils/scoring.ts
+
 import { AnswerScores, EvaluationResult } from '../types/onboarding';
 import { evaluationCriteria } from '../constants/evaluationCriteria';
 import { missionSuggestions } from '../constants/missionSuggestions';
 
 export const getAverage = (scores: number[]): number => {
-  if (scores.length === 0) return 0;
-  const sum = scores.reduce((a, b) => a + b, 0);
-  return sum / scores.length;
+  if (scores.length === 0) return 0; // 배열이 비어있을 경우 0 반환
+  const sum = scores.reduce((acc, curr) => acc + curr, 0);
+  const average = sum / scores.length;
+  return isNaN(average) || !isFinite(average) ? 0 : average; // NaN 또는 Infinity 체크
 };
 
 export const evaluateScores = (scores: AnswerScores): { [category: string]: EvaluationResult } => {

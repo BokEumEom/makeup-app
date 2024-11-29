@@ -38,9 +38,12 @@ const getScoreProperties = (score: number): { icon: IoniconNames; color: string 
 
 export const ResultCard: React.FC<ResultCardProps> = React.memo(({ title, results, style }) => {
   const chartData = useMemo(() => {
-    // 유효하지 않은 데이터를 0으로 대체
-    const validData = results.map((item) => (isNaN(item.score) || item.score === null ? 0 : item.score));
-
+    const validData = results.map((item) => {
+      const value = isNaN(item.score) || !isFinite(item.score) ? 0 : item.score;
+      return value;
+    });
+  
+    console.log('Chart Data:', validData);
     return {
       labels: results.map((item) => item.category),
       data: validData,

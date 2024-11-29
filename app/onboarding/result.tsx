@@ -1,7 +1,8 @@
+// app/onboarding/result.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/common/Button';
@@ -15,34 +16,34 @@ import { AnswerScores, EvaluationResult } from '@/types/onboarding';
 import { getCategoryLabel } from '@/utils/categoryLabels';
 import { evaluateScores, getAverage, suggestMission } from '@/utils/scoring';
 
+// ResultItem 타입 정의
+interface ResultItem {
+  category: string;
+  score: number;
+  evaluation: EvaluationResult;
+}
+
 const OnboardingResultScreen = () => {
   const router = useRouter();
   const { answers } = useLocalSearchParams();
+
   const [parsedAnswers, setParsedAnswers] = useState<AnswerScores>({});
   const [evaluationResults, setEvaluationResults] = useState<{ [category: string]: EvaluationResult }>({});
   const [mission, setMission] = useState<string>('');
+  const [isDataReady, setIsDataReady] = useState(false);
+  const [results, setResults] = useState<ResultItem[] | null>(null);
 
-  useEffect(() => {
-    if (answers) {
-      try {
-        const parsed = JSON.parse(answers as string);
-        processAnswers(parsed);
-      } catch (error) {
-        console.error('Failed to parse answers', error);
-        alert('결과 데이터를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
-      }
-    }
-  }, [answers]);
-
-  const processAnswers = (answersData: { [key: number]: number }) => {
+  // processAnswers 함수를 useCallback으로 감싸고 의존성 배열에 추가
+  const processAnswers = useCallback((answersData: { [key: number]: number }) => {
     const categoryScores: AnswerScores = {};
 
     onboardingQuestions.forEach((question) => {
-      const score = answersData[question.id] ?? 0;
+      const score = answersData[question.id];
+      const validScore = typeof score === 'number' && isFinite(score) ? score : question.min; // 유효성 검사 및 기본값 설정
       if (!categoryScores[question.category]) {
         categoryScores[question.category] = [];
       }
-      categoryScores[question.category].push(score);
+      categoryScores[question.category].push(validScore);
     });
 
     setParsedAnswers(categoryScores);
@@ -50,19 +51,42 @@ const OnboardingResultScreen = () => {
     setEvaluationResults(results);
     const suggestedMission = suggestMission(categoryScores);
     setMission(suggestedMission);
-  };
+
+    // 결과 계산 및 설정
+    const computedResults = Object.entries(categoryScores).map(([category, scores]) => ({
+      category: getCategoryLabel(category, true),
+      score: getAverage(scores),
+      evaluation: results[category],
+    }));
+    setResults(computedResults);
+  }, []);
+
+  // 데이터 로딩 및 처리
+  useEffect(() => {
+    if (answers) {
+      try {
+        const parsed = JSON.parse(answers as string);
+        processAnswers(parsed);
+        setIsDataReady(true); // 데이터 로딩 완료 설정
+      } catch (error) {
+        console.error('Failed to parse answers', error);
+        alert('결과 데이터를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
+      }
+    }
+  }, [answers, processAnswers]);
 
   const handleFinish = useCallback(() => {
     router.replace('/');
   }, [router]);
 
-  const results = useMemo(() => {
-    return Object.entries(parsedAnswers).map(([category, scores]) => ({
-      category: getCategoryLabel(category, true),
-      score: getAverage(scores),
-      evaluation: evaluationResults[category],
-    }));
-  }, [parsedAnswers, evaluationResults]);
+  // 데이터가 준비되지 않았을 때 로딩 스피너 표시
+  if (!isDataReady || !results) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <GradientBackground colors={['#A7C7E7', '#E3F2FD']}>
@@ -101,6 +125,12 @@ const OnboardingResultScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1, // 화면 전체를 채우도록 설정
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',

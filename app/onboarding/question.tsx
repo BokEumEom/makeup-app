@@ -80,6 +80,13 @@ const QuestionScreen = () => {
     if (step < onboardingQuestions.length) {
       setStep(step + 1);
     } else {
+      // answers 데이터 검증
+      const isValidAnswers = Object.values(answers).every((value) => typeof value === 'number' && isFinite(value));
+      if (!isValidAnswers) {
+        alert('응답 데이터에 문제가 있습니다. 다시 시도해주세요.');
+        return;
+      }
+  
       await saveAnswers(answers);
       router.push({
         pathname: '/onboarding/result',
@@ -89,7 +96,7 @@ const QuestionScreen = () => {
         },
       });
     }
-  }, [step, answers]);
+  }, [step, answers]);  
 
   const currentQuestion = useMemo(() => onboardingQuestions[step - 1], [step]);
   const currentValue = useMemo(() => answers[currentQuestion.id] ?? currentQuestion.min, [answers, currentQuestion]);
