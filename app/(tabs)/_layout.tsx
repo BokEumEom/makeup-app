@@ -67,15 +67,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="onboarding"
-        options={{
-          title: "온보딩",
-          tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'book' : 'book-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="wallpaper"
         options={{
           title: '배경화면',

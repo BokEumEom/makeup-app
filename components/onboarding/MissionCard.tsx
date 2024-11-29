@@ -1,23 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface MissionCardProps {
   title: string;
   mission: string;
   onAccept?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-export const MissionCard: React.FC<MissionCardProps> = ({ title, mission, onAccept }) => {
+export const MissionCard: React.FC<MissionCardProps> = ({ title, mission, onAccept, style }) => {
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, style]}>
+      {/* Header Section */}
       <View style={styles.headerContainer}>
         <Ionicons name="flag" size={24} color="#6A92B8" />
         <Text style={styles.title}>{title}</Text>
       </View>
+
+      {/* Mission Text */}
       <Text style={styles.missionText}>{mission}</Text>
+
+      {/* Accept Button */}
       {onAccept && (
-        <TouchableOpacity style={styles.button} onPress={onAccept}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={onAccept}
+          accessibilityRole="button"
+          accessibilityLabel="미션 수락하기"
+        >
           <Text style={styles.buttonText}>미션 수락하기</Text>
         </TouchableOpacity>
       )}
@@ -42,6 +53,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 10,
   },
   title: {
     fontSize: 18,
@@ -52,7 +64,8 @@ const styles = StyleSheet.create({
   missionText: {
     fontSize: 16,
     color: '#555',
-    lineHeight: 20,
+    lineHeight: 22,
+    marginVertical: 10,
   },
   button: {
     backgroundColor: '#6A92B8',
@@ -60,6 +73,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 25,
     alignSelf: 'center',
+    marginTop: 15,
   },
   buttonText: {
     color: '#FFFFFF',

@@ -1,25 +1,36 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import CustomText from '@/components/common/CustomText';
 
 const ProgressSection: React.FC = () => {
+  const router = useRouter();
+
+  const navigateToOnboarding = () => {
+    router.push('/onboarding');
+  };
+
+  const navigateToDashboard = () => {
+    router.push('/resignation/dashboard');
+  };
+
   return (
     <View style={styles.rowContainer}>
-      <View style={styles.progressContainer}>
-        <CustomText style={styles.progressTitle}>현재 개선 진행 상황</CustomText>
+      {/* 온보딩으로 이동 */}
+      <TouchableOpacity style={styles.progressContainer} onPress={navigateToOnboarding}>
+        <CustomText style={styles.progressTitle}>온보딩</CustomText>
         <View style={styles.progressBar}>
           <View style={styles.progress} />
         </View>
         <CustomText style={styles.progressText}>45% 완료</CustomText>
-      </View>
-      <Link href="/resignation/dashboard" asChild>
-        <TouchableOpacity style={styles.dashboardButton}>
-          <Ionicons name="grid-outline" size={24} color="#fff" />
-          <CustomText style={styles.dashboardButtonText}>대시보드</CustomText>
-        </TouchableOpacity>
-      </Link>
+      </TouchableOpacity>
+
+      {/* 대시보드로 이동 */}
+      <TouchableOpacity style={styles.dashboardButton} onPress={navigateToDashboard}>
+        <Ionicons name="grid-outline" size={24} color="#fff" />
+        <CustomText style={styles.dashboardButtonText}>대시보드</CustomText>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -42,15 +53,15 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   progressBar: {
-    height: 6,
+    height: 14,
     backgroundColor: '#E6E6E6',
-    borderRadius: 3,
+    borderRadius: 10,
     overflow: 'hidden',
   },
   progress: {
     width: '45%',
     height: '100%',
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#FF9800',
   },
   progressText: {
     fontSize: 12,

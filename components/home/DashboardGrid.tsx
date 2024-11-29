@@ -2,9 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import DashboardCard from './DashboardCard'; // Assuming DashboardCard is already available
 
-const dashboardData: CardData[] = [
+const dashboardData = [
   {
-    title: '감정 체크',
+    title: '감정 지수',
     subtitle: '나만의 감정 상태를 알아보세요',
     icon: 'happy-outline',
     colors: ['#A7C7E7', '#6A92B8'],
@@ -32,7 +32,7 @@ const dashboardData: CardData[] = [
     link: '/scenario',
   },
   {
-    title: '명상',
+    title: '마음챙김',
     subtitle: '명상으로 자신을 돌보세요',
     icon: 'hourglass-outline',
     colors: ['#B8D0E6', '#6A92B8'],

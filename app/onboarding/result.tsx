@@ -1,22 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button } from '../../../components/common/Button';
-import { GradientBackground } from '../../../components/common/GradientBackground';
-import { MissionCard } from '../../../components/onboarding/MissionCard';
-import { ResultCard } from '../../../components/onboarding/ResultCard';
+import { Button } from '@/components/common/Button';
+import { GradientBackground } from '@/components/common/GradientBackground';
+import { MissionCard } from '@/components/onboarding/MissionCard';
+import { ResultCard } from '@/components/onboarding/ResultCard';
 
-import { evaluationCriteria } from '../../../constants/evaluationCriteria';
-import { missionSuggestions } from '../../../constants/missionSuggestions';
-import { onboardingQuestions } from '../../../constants/onboardingQuestions';
+import { onboardingQuestions } from '@/constants/onboardingQuestions';
 
-import { AnswerScores, EvaluationResult } from '../../../types/onboarding';
-import { getCategoryLabel } from '../../../utils/categoryLabels';
-import { evaluateScores, getAverage, suggestMission } from '../../../utils/scoring';
-
+import { AnswerScores, EvaluationResult } from '@/types/onboarding';
+import { getCategoryLabel } from '@/utils/categoryLabels';
+import { evaluateScores, getAverage, suggestMission } from '@/utils/scoring';
 
 const OnboardingResultScreen = () => {
   const router = useRouter();
@@ -32,6 +29,7 @@ const OnboardingResultScreen = () => {
         processAnswers(parsed);
       } catch (error) {
         console.error('Failed to parse answers', error);
+        alert('결과 데이터를 불러오는 중 문제가 발생했습니다. 다시 시도해주세요.');
       }
     }
   }, [answers]);
@@ -48,15 +46,23 @@ const OnboardingResultScreen = () => {
     });
 
     setParsedAnswers(categoryScores);
-    const results = evaluateScores(categoryScores, evaluationCriteria);
+    const results = evaluateScores(categoryScores);
     setEvaluationResults(results);
-    const suggestedMission = suggestMission(categoryScores, missionSuggestions);
+    const suggestedMission = suggestMission(categoryScores);
     setMission(suggestedMission);
   };
 
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     router.replace('/');
-  };
+  }, [router]);
+
+  const results = useMemo(() => {
+    return Object.entries(parsedAnswers).map(([category, scores]) => ({
+      category: getCategoryLabel(category, true),
+      score: getAverage(scores),
+      evaluation: evaluationResults[category],
+    }));
+  }, [parsedAnswers, evaluationResults]);
 
   return (
     <GradientBackground colors={['#A7C7E7', '#E3F2FD']}>
@@ -68,17 +74,13 @@ const OnboardingResultScreen = () => {
             당신의 관계 상태를 분석했습니다. 맞춤형 개선 방안을 확인해보세요.
           </Text>
 
-          {/* Mission Suggestion (moved up) */}
+          {/* Mission Suggestion */}
           <MissionCard title="추천 미션" mission={mission} style={styles.card} />
 
           {/* Evaluation Results */}
           <ResultCard
             title="카테고리별 평가 결과"
-            results={Object.entries(parsedAnswers).map(([category, scores]) => ({
-              category: getCategoryLabel(category, true),
-              score: getAverage(scores),
-              evaluation: evaluationResults[category],
-            }))}
+            results={results}
             style={styles.card}
           />
         </ScrollView>

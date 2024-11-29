@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet, ScrollView, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LineChart } from 'react-native-chart-kit';
+import { Chart } from './Chart';
 
 interface ResultItem {
   category: string;
@@ -15,100 +15,65 @@ interface ResultItem {
 interface ResultCardProps {
   title: string;
   results: ResultItem[];
+  style?: ViewStyle; // style 속성 추가
 }
 
-export const ResultCard: React.FC<ResultCardProps> = ({ title, results }) => {
-  const getIconName = (score: number): string => {
-    if (score >= 8) return 'happy-outline';
-    if (score >= 6) return 'sunny-outline';
-    if (score >= 4) return 'sad-outline';
-    return 'thunderstorm-outline';
+// Ionicons에서 지원하는 아이콘 이름의 타입 정의
+type IoniconNames = "happy-outline" | "sunny-outline" | "sad-outline" | "thunderstorm-outline";
+
+const scoreMapping: { min: number; icon: IoniconNames; color: string }[] = [
+  { min: 8, icon: 'happy-outline', color: '#4CAF50' },
+  { min: 6, icon: 'sunny-outline', color: '#FFC107' },
+  { min: 4, icon: 'sad-outline', color: '#FF9800' },
+  { min: 0, icon: 'thunderstorm-outline', color: '#F44336' },
+];
+
+const getScoreProperties = (score: number): { icon: IoniconNames; color: string } => {
+  const entry = scoreMapping.find((entry) => score >= entry.min);
+  return {
+    icon: entry?.icon || 'thunderstorm-outline',
+    color: entry?.color || '#F44336',
   };
+};
 
-  const getScoreColor = (score: number): string => {
-    if (score >= 8) return '#4CAF50';
-    if (score >= 6) return '#FFC107';
-    if (score >= 4) return '#FF9800';
-    return '#F44336';
-  };
+export const ResultCard: React.FC<ResultCardProps> = React.memo(({ title, results, style }) => {
+  const chartData = useMemo(() => {
+    // 유효하지 않은 데이터를 0으로 대체
+    const validData = results.map((item) => (isNaN(item.score) || item.score === null ? 0 : item.score));
 
-  // 차트를 렌더링하는 함수
-  const renderChart = () => {
-    const chartLabels = results.map(item => item.category);
-    const chartData = results.map(item => {
-      // score가 유효한 숫자인지 확인하고, 그렇지 않으면 0을 기본값으로 설정
-      const score = isNaN(item.score) || item.score === undefined ? 0 : item.score;
-      return score;
-    });
-
-    return (
-      <LineChart
-        data={{
-          labels: chartLabels,
-          datasets: [
-            {
-              data: chartData,
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width - 50} // 차트 너비를 화면 너비에 맞춤
-        height={220}
-        chartConfig={{
-          backgroundColor: '#ffffff',
-          backgroundGradientFrom: '#ffffff',
-          backgroundGradientTo: '#ffffff',
-          decimalPlaces: 1, // 소수점 자리수
-          color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`, // 그래프 라인 색상
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: '#ffa726',
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-        fromZero
-      />
-    );
-  };
-
-  // 현재 화면 높이에 맞추어 스크롤 뷰의 동적 높이를 계산
-  const dynamicScrollViewHeight = Dimensions.get('window').height * 0.3;
+    return {
+      labels: results.map((item) => item.category),
+      data: validData,
+    };
+  }, [results]);
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, style]}>
       <Text style={styles.cardTitle}>{title}</Text>
-
-      {/* 차트 추가 */}
-      {renderChart()}
-
-      <ScrollView style={[styles.resultDetails, { maxHeight: dynamicScrollViewHeight }]}>
-        {results.map((item, index) => (
-          <View key={index} style={styles.resultItem}>
-            <View style={styles.resultHeader}>
-              <Ionicons name={getIconName(item.score)} size={24} color={getScoreColor(item.score)} />
-              <Text style={styles.resultLabel}>{item.category}</Text>
+      <Chart labels={chartData.labels} data={chartData.data} />
+      <ScrollView style={styles.resultDetails}>
+        {results.map((item, index) => {
+          const { icon, color } = getScoreProperties(item.score);
+          return (
+            <View key={index} style={styles.resultItem}>
+              <View style={styles.resultHeader}>
+                <Ionicons name={icon} size={24} color={color} />
+                <Text style={styles.resultLabel}>{item.category}</Text>
+              </View>
+              <View style={styles.resultValueContainer}>
+                <Text style={[styles.resultValue, { color }]}>
+                  {item.score.toFixed(1)}/10
+                </Text>
+                <Text style={styles.resultLevel}>({item.evaluation.level})</Text>
+              </View>
+              <Text style={styles.resultDescription}>{item.evaluation.description}</Text>
             </View>
-            <View style={styles.resultValueContainer}>
-              <Text style={[styles.resultValue, { color: getScoreColor(item.score) }]}>
-                {item.score.toFixed(1)}/10
-              </Text>
-              <Text style={styles.resultLevel}>({item.evaluation.level})</Text>
-            </View>
-            <Text style={styles.resultDescription}>{item.evaluation.description}</Text>
-          </View>
-        ))}
+          );
+        })}
       </ScrollView>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   card: {
@@ -131,10 +96,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   resultDetails: {
-    marginBottom: 10, // 추가적인 여백
+    marginBottom: 10,
   },
   resultItem: {
-    marginBottom: 15, // 항목 간 여백 추가
+    marginBottom: 15,
   },
   resultHeader: {
     flexDirection: 'row',
@@ -164,6 +129,5 @@ const styles = StyleSheet.create({
   resultDescription: {
     fontSize: 14,
     color: '#777',
-    // marginTop: 5,
   },
 });
