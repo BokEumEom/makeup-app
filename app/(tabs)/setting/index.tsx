@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
 import { Header } from '@/components/common/Header'; // Ensure this path is correct
 import { useRouter } from 'expo-router';
+import CustomText from '@/components/common/CustomText';
 
 const SettingsScreen = () => {
   const [sleepSetting, setSleepSetting] = useState(false);
@@ -13,13 +14,12 @@ const SettingsScreen = () => {
     <View style={styles.container}>
       <Header 
         title="설정" 
-        showBackButton={true} 
         titleColor="#333333" 
       />
 
       {/* Settings items */}
       <View style={styles.item}>
-        <Text style={styles.label}>잠금 설정</Text>
+        <CustomText style={styles.label}>잠금 설정</CustomText>
         <Switch
           value={sleepSetting}
           onValueChange={setSleepSetting}
@@ -27,8 +27,8 @@ const SettingsScreen = () => {
       </View>
 
       <View style={styles.item}>
-        <Text style={styles.label}>나만의 알림 설정</Text>
-        <Text style={styles.timeText}>6:00 PM</Text>
+        <CustomText style={styles.label}>나만의 알림 설정</CustomText>
+        <CustomText style={styles.timeText}>6:00 PM</CustomText>
         <Switch
           value={personalAlert}
           onValueChange={setPersonalAlert}
@@ -37,42 +37,42 @@ const SettingsScreen = () => {
 
       {/* Navigation options */}
       <TouchableOpacity style={styles.item}>
-        <Text style={styles.label}>다크모드/라이트모드</Text>
+        <CustomText style={styles.label}>다크모드/라이트모드</CustomText>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.item}>
-        <Text style={styles.label}>언어 설정</Text>
+        <CustomText style={styles.label}>언어 설정</CustomText>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.item}>
-        <Text style={styles.label}>카드 위치 변경</Text>
+        <CustomText style={styles.label}>카드 위치 변경</CustomText>
       </TouchableOpacity>
 
       {/* Navigate to the Music Setting Screen */}
       <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/music')}>
-        <Text style={styles.label}>음악 변경</Text>
+        <CustomText style={styles.label}>음악 변경</CustomText>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/font')}>
-        <Text style={styles.label}>폰트 변경</Text>
+        <CustomText style={styles.label}>폰트 변경</CustomText>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item}>
-        <Text style={styles.label}>모든 기록 삭제하기</Text>
+      <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/tabs')}>
+        <CustomText style={styles.label}>기능 구현</CustomText>
       </TouchableOpacity>
 
       {/* Footer with version */}
       <View style={styles.footer}>
-        <Text style={styles.footerLabel}>나의 Soran 버전</Text>
-        <Text style={styles.versionText}>0.0.1</Text>
+        <CustomText style={styles.footerLabel}>나의 Soran 버전</CustomText>
+        <CustomText style={styles.versionText}>0.0.1</CustomText>
       </View>
 
       <TouchableOpacity style={styles.item}>
-        <Text style={styles.label}>앱 별점 남기기</Text>
+        <CustomText style={styles.label}>앱 별점 남기기</CustomText>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.item}>
-        <Text style={styles.label}>의견 및 피드백 남기기</Text>
+        <CustomText style={styles.label}>의견 및 피드백 남기기</CustomText>
       </TouchableOpacity>
     </View>
   );

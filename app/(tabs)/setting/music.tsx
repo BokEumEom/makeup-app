@@ -3,19 +3,21 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { Header } from '@/components/common/Header';
 import { Ionicons } from '@expo/vector-icons';
+import CustomText from '@/components/common/CustomText';
 
 const songs = [
-  '밝은 밤 도시',
-  '찬란한 해변',
-  '초여름 잔디',
-  '유영하는 우주',
-  '다시 어린 시절',
-  '기다리는 기적',
-  '숲의 요정',
+  '실로폰 희망곡',
+  '행복의 날들',
+  '함께 걷는 길',
+  '나란히 걸어가',
+  '순수한 사랑',
+  '바람의 노래',
+  '기적의 밤',
+  '우리들의 풍경',
 ];
 
 const MusicChangeScreen = () => {
-  const [selectedSong, setSelectedSong] = useState('밝은 밤 도시');
+  const [selectedSong, setSelectedSong] = useState('실로폰 희망곡');
 
   const handleSelectSong = (song: string) => {
     setSelectedSong(song);
@@ -26,8 +28,8 @@ const MusicChangeScreen = () => {
       <Header title="음악 변경" showBackButton={true} titleColor="#333333" />
 
       <View style={styles.tipBox}>
-        <Text style={styles.tipTitle}>Tip</Text>
-        <Text style={styles.tipText}>홈 화면에서 소리 아이콘을 꾹 눌르면 음악을 변경할 수 있어요.</Text>
+        <CustomText style={styles.tipTitle}>Tip</CustomText>
+        <CustomText style={styles.tipText}>홈 화면에서 소리 아이콘을 꾹 눌르면 음악을 변경할 수 있어요.</CustomText>
       </View>
 
       <FlatList
@@ -35,7 +37,7 @@ const MusicChangeScreen = () => {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.songItem} onPress={() => handleSelectSong(item)}>
-            <Text style={styles.songText}>{item}</Text>
+            <CustomText style={styles.songText}>{item}</CustomText>
             {selectedSong === item && (
               <Ionicons name="checkmark" size={20} color="#333333" />
             )}
