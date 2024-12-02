@@ -42,8 +42,7 @@ export const ResultCard: React.FC<ResultCardProps> = React.memo(({ title, result
       const value = isNaN(item.score) || !isFinite(item.score) ? 0 : item.score;
       return value;
     });
-  
-    console.log('Chart Data:', validData);
+
     return {
       labels: results.map((item) => item.category),
       data: validData,

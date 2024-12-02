@@ -9,18 +9,13 @@ interface ChartProps {
 
 export const Chart: React.FC<ChartProps> = ({ labels, data }) => {
   // 데이터 유효성 검사
-  const sanitizedData = data.map((value, index) => {
-    if (isNaN(value) || value < 0) {
-      console.warn(`Invalid chart data at index ${index}: ${value}. Replacing with 0.`);
-      return 0;
-    }
-    return value;
-  });  
+  const sanitizedData = data.length > 0 ? data.map((value) => (isFinite(value) ? value : 0)) : [0];
+  const sanitizedLabels = labels.length > 0 ? labels : ['데이터 없음'];
 
   return (
     <LineChart
       data={{
-        labels,
+        labels: sanitizedLabels,
         datasets: [
           {
             data: sanitizedData, // 검증된 데이터 사용
