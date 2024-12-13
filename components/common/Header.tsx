@@ -1,25 +1,31 @@
-// components/common/Header.tsx
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import CustomText from '@/components/common/CustomText';
 
 interface HeaderProps {
   title: string;
   showBackButton?: boolean;
-  titleColor?: string; // 텍스트 색상을 설정할 수 있는 props
+  titleColor?: string;
+  onBackPress?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   title,
   showBackButton = true,
-  titleColor = '#FFFFFF', // 기본값 설정
+  titleColor = '#333333',
+  onBackPress,
 }) => {
   const router = useRouter();
 
   const handleBackPress = () => {
-    router.back();
+    if (onBackPress) {
+      onBackPress(); // 사용자 정의 콜백 실행
+    } else {
+      router.back(); // 기본 뒤로 가기
+    }
   };
 
   return (
@@ -30,7 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
             <AntDesign name="leftcircleo" size={26} color={titleColor} />
           </TouchableOpacity>
         )}
-        <Text style={[styles.headerTitle, { color: titleColor }]}>{title}</Text>
+        <CustomText style={[styles.headerTitle, { color: titleColor }]}>{title}</CustomText>
       </View>
     </SafeAreaView>
   );
@@ -38,23 +44,23 @@ export const Header: React.FC<HeaderProps> = ({
 
 const styles = StyleSheet.create({
   safeArea: {
-    // backgroundColor: '#4A90E2', // 고정된 배경색
+    backgroundColor: '#FFFFFF',
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
     justifyContent: 'center',
+    // paddingVertical: 15, // 세로 여백
+    paddingHorizontal: 16, // 좌우 여백
   },
   backButton: {
     position: 'absolute',
-    left: 15,
+    left: 16, // 좌측 여백
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: 'DepartureMono',
   },
 });
+

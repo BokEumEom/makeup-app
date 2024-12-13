@@ -1,4 +1,4 @@
-// app/game/pazaak/intro.tsx
+// app/game/pazaak/index.tsx
 
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
@@ -15,16 +15,16 @@ const GameIntroScreen = () => {
 
       {/* 메뉴 버튼 */}
       <View style={styles.menu}>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('./pazaak')}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/game/pazaak/pazaak')}>
           <Text style={styles.buttonText}>새로운 게임</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('./leaderboard')}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/game/pazaak/leaderboard')}>
           <Text style={styles.buttonText}>리더보드</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('./options')}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/game/pazaak/options')}>
           <Text style={styles.buttonText}>옵션</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => router.push('./rules')}>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/game/pazaak/rules')}>
           <Text style={styles.buttonText}>게임 방법</Text>
         </TouchableOpacity>
       </View>

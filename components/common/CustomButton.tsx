@@ -1,45 +1,66 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+// components/common/CustomButton.tsx
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 
 interface CustomButtonProps {
-    onPress: () => void;
-    title: string;
-    textStyles?: object;
-    containerStyles?: object;
+  onPress: () => void;
+  title: string;
+  textStyles?: object;
+  containerStyles?: object;
 }
 
 const CustomButton = ({
-    onPress,
-    title,
-    textStyles = {},
-    containerStyles = {},
+  onPress,
+  title,
+  textStyles = {},
+  containerStyles = {},
 }: CustomButtonProps) => {
-    return (
-        <TouchableOpacity
-            activeOpacity={0.7}
-            style={[styles.buttonContainer, containerStyles]}
-            onPress={onPress}
-        >
-            <Text style={[styles.buttonText, textStyles]}>
-                {title}
-            </Text>
-        </TouchableOpacity>
-    );
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.95); // 버튼을 누르면 축소
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1); // 버튼에서 손을 떼면 원래 크기로
+    onPress();
+  };
+
+  return (
+    <Animated.View style={[styles.buttonContainer, containerStyles, animatedStyle]}>
+      <Text
+        style={[styles.buttonText, textStyles]}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+      >
+        {title}
+      </Text>
+    </Animated.View>
+  );
 };
 
 const styles = StyleSheet.create({
-    buttonContainer: {
-        backgroundColor: "white",
-        borderRadius: 12, // corresponds to `rounded-xl`
-        minHeight: 62, // corresponds to `min-h-[62px]`
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    buttonText: {
-        color: "#007AFF", // substitute `text-primary` with your primary color
-        fontWeight: "600", // corresponds to `font-semibold`
-        fontSize: 18, // corresponds to `text-lg`
-    },
+  buttonContainer: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    minHeight: 62,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#007AFF',
+    fontWeight: '600',
+    fontSize: 18,
+  },
 });
 
 export default CustomButton;

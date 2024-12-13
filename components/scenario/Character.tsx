@@ -1,6 +1,6 @@
-import { Image } from 'expo-image'; // expo-image 컴포넌트로 변경
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
+import { Image } from 'expo-image';  // expo-image 컴포넌트로 변경
 import { EmotionContext } from '../../contexts/EmotionContext';
 
 export const Character = () => {

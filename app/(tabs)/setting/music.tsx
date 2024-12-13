@@ -1,48 +1,70 @@
-// app/(tabs)/setting/music.tsx
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Header } from '@/components/common/Header';
 import { Ionicons } from '@expo/vector-icons';
 import CustomText from '@/components/common/CustomText';
-
-const songs = [
-  '실로폰 희망곡',
-  '행복의 날들',
-  '함께 걷는 길',
-  '나란히 걸어가',
-  '순수한 사랑',
-  '바람의 노래',
-  '기적의 밤',
-  '우리들의 풍경',
-];
+import songs from '@/constants/songs';
+import useMusicPlayer from '@/hooks/useMusicPlayer';
+import { useRouter } from 'expo-router';
 
 const MusicChangeScreen = () => {
-  const [selectedSong, setSelectedSong] = useState('실로폰 희망곡');
+  const { selectedSong, selectSong, stopMusic } = useMusicPlayer(songs, songs[0].name);
+  const router = useRouter();
 
-  const handleSelectSong = (song: string) => {
-    setSelectedSong(song);
+  // 뒤로 가기 처리
+  const handleBackPress = async () => {
+    try {
+      await stopMusic(); // 음악 재생 중지
+      router.back(); // 이전 화면으로 이동
+    } catch (error) {
+      console.error('Failed to handle back press:', error);
+    }
+  };
+
+  // 컴포넌트 언마운트 시 음악 중지
+  useEffect(() => {
+    return () => {
+      stopMusic();
+    };
+  }, [stopMusic]);
+
+  const handleSelectSong = async (song: { name: string; file: any }) => {
+    try {
+      await selectSong(song.name);
+      alert(`음악 "${song.name}" 으로 변경되었습니다.`);
+    } catch (error) {
+      console.error('Failed to select and play song:', error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Header title="음악 변경" showBackButton={true} titleColor="#333333" />
-
-      <View style={styles.tipBox}>
-        <CustomText style={styles.tipTitle}>Tip</CustomText>
-        <CustomText style={styles.tipText}>홈 화면에서 소리 아이콘을 꾹 눌르면 음악을 변경할 수 있어요.</CustomText>
-      </View>
-
+      <Header title="음악 변경" showBackButton onBackPress={handleBackPress} />
       <FlatList
         data={songs}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.songItem} onPress={() => handleSelectSong(item)}>
-            <CustomText style={styles.songText}>{item}</CustomText>
-            {selectedSong === item && (
-              <Ionicons name="checkmark" size={20} color="#333333" />
+          <TouchableOpacity
+            style={[
+              styles.songItem,
+              selectedSong === item.name && styles.selectedSong,
+            ]}
+            onPress={() => handleSelectSong(item)}
+          >
+            <CustomText
+              style={[
+                styles.songText,
+                selectedSong === item.name && styles.selectedSongText,
+              ]}
+            >
+              {item.name}
+            </CustomText>
+            {selectedSong === item.name && (
+              <Ionicons name="checkmark" size={20} color="#00796B" />
             )}
           </TouchableOpacity>
         )}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -52,23 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
-  },
-  tipBox: {
-    backgroundColor: '#F5F5F5',
-    padding: 10,
-    borderRadius: 8,
-    marginVertical: 20,
-  },
-  tipTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#888888',
-    marginBottom: 5,
-  },
-  tipText: {
-    fontSize: 14,
-    color: '#888888',
   },
   songItem: {
     flexDirection: 'row',
@@ -77,10 +82,19 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderBottomWidth: 0.5,
     borderBottomColor: '#e0e0e0',
+    paddingHorizontal: 20,
   },
   songText: {
     fontSize: 16,
     color: '#333333',
+  },
+  selectedSong: {
+    backgroundColor: '#E0F7FA',
+    borderRadius: 8,
+  },
+  selectedSongText: {
+    fontWeight: 'bold',
+    color: '#00796B',
   },
 });
 

@@ -4,25 +4,32 @@ import { View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
 import { Header } from '@/components/common/Header'; // Ensure this path is correct
 import { useRouter } from 'expo-router';
 import CustomText from '@/components/common/CustomText';
+import useMusicPlayer from '@/hooks/useMusicPlayer';
+import songs from '@/constants/songs';
 
 const SettingsScreen = () => {
+  const router = useRouter();
   const [sleepSetting, setSleepSetting] = useState(false);
   const [personalAlert, setPersonalAlert] = useState(false);
-  const router = useRouter();
+  const { isPlaying, toggleMusic } = useMusicPlayer(songs, songs[0].name);
 
   return (
     <View style={styles.container}>
-      <Header 
-        title="설정" 
-        titleColor="#333333" 
-      />
+      <Header title="설정" titleColor="#333333" />
 
       {/* Settings items */}
+      {/* 배경음악 설정 */}
       <View style={styles.item}>
-        <CustomText style={styles.label}>잠금 설정</CustomText>
+        <CustomText style={styles.label}>배경음악</CustomText>
         <Switch
-          value={sleepSetting}
-          onValueChange={setSleepSetting}
+          value={isPlaying}
+          onValueChange={async () => {
+            try {
+              await toggleMusic();
+            } catch (error) {
+              console.error('Failed to toggle music:', error);
+            }
+          }}
         />
       </View>
 
@@ -42,10 +49,6 @@ const SettingsScreen = () => {
 
       <TouchableOpacity style={styles.item}>
         <CustomText style={styles.label}>언어 설정</CustomText>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.item}>
-        <CustomText style={styles.label}>카드 위치 변경</CustomText>
       </TouchableOpacity>
 
       {/* Navigate to the Music Setting Screen */}

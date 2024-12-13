@@ -48,7 +48,7 @@ const MeditateScreen = () => {
                                 .springify(20)}
                         >
                             <CustomButton
-                                onPress={() => router.push("./nature-meditate")}
+                                onPress={() => router.push("/meditate/nature-meditate")}
                                 title="Get Started"
                             />
                         </Animated.View>

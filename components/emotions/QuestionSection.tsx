@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from '../common/Button'; // Assuming you have a common Button component with custom styles
+import CustomText from '@/components/common/CustomText';
 
 type QuestionSectionProps = {
   section: { title: string; questions: string[]; conclusions: any };
@@ -26,8 +27,8 @@ export default function QuestionSection({ section, onNext }: QuestionSectionProp
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{section.title}</Text>
-      <Text style={styles.question}>{section.questions[currentQuestion]}</Text>
+      <CustomText style={styles.title}>{section.title}</CustomText>
+      <CustomText style={styles.question}>{section.questions[currentQuestion]}</CustomText>
       
       <Button
         title="Yes"

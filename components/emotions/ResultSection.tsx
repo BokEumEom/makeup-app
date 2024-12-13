@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import CustomText from '@/components/common/CustomText';
 
 type ResultSectionProps = {
   conclusion: string;
@@ -18,23 +19,23 @@ export default function ResultSection({ conclusion, onLearnMore }: ResultSection
 
   return (
     <View style={styles.container}>
-      <Text style={styles.conclusion}>{conclusion}</Text>
+      <CustomText style={styles.conclusion}>{conclusion}</CustomText>
 
       <TouchableOpacity style={styles.button} onPress={onLearnMore}>
         <LinearGradient colors={['#F4A261', '#E76F51']} style={styles.gradient}>
-          <Text style={styles.buttonText}>내면 더 알아보기</Text>
+          <CustomText style={styles.buttonText}>내면 더 알아보기</CustomText>
         </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => router.push('/emotions')}>
         <LinearGradient colors={['#FFB4A2', '#FF8C66']} style={styles.gradient}>
-          <Text style={styles.buttonText}>다른 상태 선택</Text>
+          <CustomText style={styles.buttonText}>다른 상태 선택</CustomText>
         </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleGoHome}>
         <LinearGradient colors={['#FFE4C4', '#FFADAD']} style={styles.gradient}>
-          <Text style={styles.buttonText}>홈 화면으로 이동</Text>
+          <CustomText style={styles.buttonText}>홈 화면으로 이동</CustomText>
         </LinearGradient>
       </TouchableOpacity>
     </View>

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { useRouter } from 'expo-router';
 
 interface RelationshipTypeViewProps {
   types: { id: string; label: string }[];
@@ -9,7 +10,7 @@ interface RelationshipTypeViewProps {
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const IMAGE_SIZE = SCREEN_WIDTH * 0.6; // 화면 너비의 60%로 이미지 크기 설정
+const IMAGE_SIZE = SCREEN_WIDTH * 0.4;
 const TYPE_BUTTON_WIDTH = SCREEN_WIDTH * 0.4;
 
 export const RelationshipTypeView: React.FC<RelationshipTypeViewProps> = React.memo(({
@@ -18,10 +19,16 @@ export const RelationshipTypeView: React.FC<RelationshipTypeViewProps> = React.m
   onSelect,
   onNext,
 }) => {
+
+  const router = useRouter();
   const handleSelect = useCallback(
     (id: string) => onSelect(id),
     [onSelect]
   );
+
+  const handleSkip = useCallback(() => {
+    router.push('/'); // Navigate to home screen
+  }, [router]);
 
   const renderedTypes = useMemo(
     () =>
@@ -45,7 +52,7 @@ export const RelationshipTypeView: React.FC<RelationshipTypeViewProps> = React.m
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.contentContainer}>
-          <Image source={require('@/assets/images/splash.png')} style={styles.logoImage} />
+          <Image source={require('@/assets/images/icon.png')} style={styles.logoImage} />
           <Text style={styles.title}>소란스러운 내면, 이겨내는 나</Text>
           <Text style={styles.subtitle}>소란과 함께 관계 개선을 위한</Text>
           <Text style={styles.subtitle}>첫 걸음을 시작해볼까요?</Text>
@@ -53,9 +60,14 @@ export const RelationshipTypeView: React.FC<RelationshipTypeViewProps> = React.m
           <View style={styles.typesContainer}>{renderedTypes}</View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.nextButton} onPress={onNext}>
-        <Text style={styles.nextButtonText}>시작하기</Text>
-      </TouchableOpacity>
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+          <Text style={styles.skipButtonText}>건너뛰기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.nextButton} onPress={onNext}>
+          <Text style={styles.nextButtonText}>시작하기</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 });
@@ -75,8 +87,8 @@ const styles = StyleSheet.create({
   logoImage: {
     width: IMAGE_SIZE,
     height: IMAGE_SIZE,
-    marginBottom: 20,
-    resizeMode: 'cover',
+    marginBottom: 30,
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 24,
@@ -124,10 +136,31 @@ const styles = StyleSheet.create({
   typeButtonTextSelected: {
     color: '#fff',
   },
-  nextButton: {
+  footer: {
     position: 'absolute',
     bottom: 20,
-    width: '90%',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  skipButton: {
+    flex: 1,
+    marginRight: 10,
+    paddingVertical: 15,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ccc',
+  },
+  skipButtonText: {
+    fontWeight: '700',
+    color: '#666',
+    fontSize: 16,
+  },
+  nextButton: {
+    flex: 1,
+    marginLeft: 10,
     paddingVertical: 15,
     borderRadius: 15,
     alignItems: 'center',

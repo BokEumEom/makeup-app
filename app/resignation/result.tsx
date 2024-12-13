@@ -30,10 +30,10 @@ export default function ResultScreen() {
         <Text style={styles.buttonText}>다시 테스트하기</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.primaryButton}
+        style={styles.secondaryButton}
         onPress={() => router.push('/resignation/dashboard')}
       >
-        <Text style={styles.buttonText}>대시보드</Text>
+        <Text style={styles.secondaryButtonText}>대시보드 보기</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.secondaryButton} onPress={handleGoHome}>
         <Text style={styles.secondaryButtonText}>홈 화면으로 이동</Text>
@@ -48,53 +48,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f0f8ff', // 부드러운 파스텔톤 배경색
+    backgroundColor: '#f9f9f9',
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: '#2C3E50',
     marginBottom: 30,
     textAlign: 'center',
   },
   card: {
     backgroundColor: '#ffffff',
-    padding: 20,
-    borderRadius: 12,
+    padding: 25,
+    borderRadius: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 6,
     marginVertical: 20,
     alignItems: 'center',
     width: '90%',
   },
   recommendation: {
     fontSize: 18,
-    color: '#555',
+    fontWeight: '600',
+    color: '#34495E',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 26,
   },
   primaryButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#3498DB',
     paddingVertical: 15,
     paddingHorizontal: 50,
-    borderRadius: 25,
+    borderRadius: 30,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   secondaryButton: {
-    backgroundColor: '#f0f8ff',
+    backgroundColor: '#ecf0f1',
     borderWidth: 1,
-    borderColor: '#4CAF50',
+    borderColor: '#3498DB',
     paddingVertical: 15,
     paddingHorizontal: 50,
-    borderRadius: 25,
+    borderRadius: 30,
+    marginBottom: 10,
   },
   buttonText: {
     color: '#fff',
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   secondaryButtonText: {
-    color: '#4CAF50',
+    color: '#3498DB',
     fontSize: 16,
     fontWeight: '600',
   },

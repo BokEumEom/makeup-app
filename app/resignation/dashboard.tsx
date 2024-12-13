@@ -79,8 +79,8 @@ const DashboardScreen = () => {
     <SafeAreaView style={styles.container}>
       <Tabs
         data={[
-          { icon: 'ChartArea', label: 'Radar Chart' },
-          { icon: 'ChartBar', label: 'Bar Chart' },
+          { icon: 'Radar', label: 'Radar Chart' },
+          { icon: 'ChartColumn', label: 'Bar Chart' },
           { icon: 'ChartLine', label: 'Line Chart' },
         ]}
         selectedIndex={selectedIndex}

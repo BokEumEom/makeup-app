@@ -1,48 +1,55 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import DashboardCard from './DashboardCard'; // Assuming DashboardCard is already available
+import { Smile, PersonStanding, Joystick, Book, Headphones, Award } from 'lucide-react-native'; // Import Lucide icons
 
-const dashboardData = [
+const dashboardData: {
+  title: string;
+  subtitle: string;
+  icon: React.FC; // Use Lucide icon components
+  colors: [string, string];
+  link: string;
+}[] = [
   {
     title: '감정 지수',
-    subtitle: '나만의 감정 상태를 알아보세요',
-    icon: 'happy-outline',
-    colors: ['#A7C7E7', '#6A92B8'],
+    subtitle: '나만의 감정 상태 췍',
+    icon: Smile, // Lucide icon
+    colors: ['#ff9a9e', '#fad0c4'],
     link: '/emotions',
   },
   {
     title: 'MBTI',
-    subtitle: '성격 유형을 알아보세요',
-    icon: 'heart-outline',
-    colors: ['#E6C3D5', '#B88AA6'],
+    subtitle: '내 성격 유형 췍',
+    icon: PersonStanding, // Lucide icon
+    colors: ['#a1c4fd', '#c2e9fb'],
     link: '/mbti',
   },
   {
     title: '게임',
-    subtitle: '간단한 게임으로 생각을 잠시 멈추세요',
-    icon: 'rocket-outline',
-    colors: ['#C3E6CB', '#8AB89E'],
+    subtitle: '즐겜 GOGO',
+    icon: Joystick, // Lucide icon
+    colors: ['#fbc2eb', '#a6c1ee'],
     link: '/game',
   },
   {
     title: '시나리오',
-    subtitle: '상황 시뮬레이션 스토리',
-    icon: 'book-outline',
-    colors: ['#FFE5B4', '#D4A76A'],
+    subtitle: '스토리 시뮬레이션',
+    icon: Book, // Lucide icon
+    colors: ['#fad0c4', '#ffd1ff'],
     link: '/scenario',
   },
   {
     title: '마음챙김',
-    subtitle: '명상으로 자신을 돌보세요',
-    icon: 'hourglass-outline',
-    colors: ['#B8D0E6', '#6A92B8'],
+    subtitle: '명상 수련',
+    icon: Headphones, // Lucide icon
+    colors: ['#ffecd2', '#fcb69f'],
     link: '/meditate',
   },
   {
     title: '퀘스트',
-    subtitle: '신뢰를 다시 쌓아가세요',
-    icon: 'paper-plane-outline',
-    colors: ['#E6D7C3', '#B8A78A'],
+    subtitle: '신뢰 쌓기',
+    icon: Award, // Lucide icon
+    colors: ['#d4fc79', '#96e6a1'],
     link: '/quest',
   },
 ];

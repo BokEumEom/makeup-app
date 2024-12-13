@@ -5,6 +5,7 @@ export default function MeditateLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="[id]" />
+      <Stack.Screen name="nature-meditate" />
     </Stack>
   );
 }

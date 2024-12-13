@@ -2,70 +2,65 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Header } from '@/components/common/Header';
-import LottieView from 'lottie-react-native';
+import CustomText from '@/components/common/CustomText';
 import { LinearGradient } from 'expo-linear-gradient';
+import { LucideIcon, Dices } from 'lucide-react-native';
 
 type GameOption = {
   title: string;
-  description: string;
-  icon: any;
-  route: string;
+  route: `/${string}`; // Type-safe route
+  colors: [string, string, ...string[]]; // Tuple with at least two colors
+  icon: LucideIcon;
 };
 
 const gameOptions: GameOption[] = [
   {
     title: 'Rock-Paper-Scissors',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
     route: '/game/rock',
+    colors: ['#ff9a9e', '#fad0c4'],
+    icon: Dices,
   },
   {
     title: '2048',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
     route: '/game/puzzle',
+    colors: ['#a1c4fd', '#c2e9fb'],
+    icon: Dices,
   },
   {
     title: 'Memory Game',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
     route: '/game/memory',
+    colors: ['#fbc2eb', '#a6c1ee'],
+    icon: Dices,
   },
   {
     title: 'Pazaak Mobile',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
     route: '/game/pazaak',
+    colors: ['#fad0c4', '#ffd1ff'],
+    icon: Dices,
   },
   {
     title: 'Tetris',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
     route: '/game/tetris',
+    colors: ['#ffecd2', '#fcb69f'],
+    icon: Dices,
   },
   {
-    title: 'Brick Breaker',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
-    route: '/game/brick',
+    title: 'Othello',
+    route: '/game/reversi',
+    colors: ['#d4fc79', '#96e6a1'],
+    icon: Dices,
   },
   {
-    title: 'Flappy Bird',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
-    route: '/game/flappybird',
+    title: 'Chat Quiz',
+    route: '/game/quiz',
+    colors: ['#d4fc79', '#96e6a1'],
+    icon: Dices,
   },
   {
-    title: 'Shaky Shuttle',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
-    route: '/game/spaceship',
-  },
-  {
-    title: 'Water Melon',
-    description: 'Play the classic game!',
-    icon: require('@/assets/animations/badge.json'),
-    route: '/game/watermelon',
+    title: 'Number Puzzle',
+    route: '/game/numberpuz',
+    colors: ['#d4fc79', '#96e6a1'],
+    icon: Dices,
   },
 ];
 
@@ -75,115 +70,87 @@ export default function GameSelectionScreen() {
   return (
     <View style={styles.container}>
       <Header title="Choose Your Game" showBackButton titleColor="#000" />
-      <View style={styles.headerContainer}>
-        {/* <LottieView
-          source={require('@/assets/animations/game.json')}
-          autoPlay
-          loop={true}
-          style={styles.headerIcon}
-        /> */}
-      </View>
-
       <FlatList
         data={gameOptions}
         keyExtractor={(item) => item.route}
-        renderItem={({ item }) => (
-          <Pressable
-            style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-            onPress={() => router.push(item.route)}
-          >
-            <LinearGradient
-              colors={['#ff9a9e', '#fad0c4']}
-              style={styles.gradient}
-              start={[0, 0]}
-              end={[1, 1]}
+        renderItem={({ item }) => {
+          const Icon = item.icon;
+          return (
+            <Pressable
+              style={({ pressed }) => [
+                styles.card,
+                pressed && styles.cardPressed,
+              ]}
+              onPress={() => router.push(item.route)}
             >
-              <View style={styles.cardContent}>
-                <View style={styles.iconContainer}>
-                  <LottieView
-                    source={item.icon}
-                    autoPlay
-                    loop
-                    style={styles.cardIcon}
-                  />
+              <LinearGradient
+                colors={item.colors}
+                style={styles.gradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <View style={styles.cardContent}>
+                  <Icon size={54} color="#FFFFFF" />
                 </View>
-                <View>
-                  <Text style={styles.cardTitle}>{item.title}</Text>
-                  <Text style={styles.cardDescription}>{item.description}</Text>
+                <View style={styles.cardFooter}>
+                  <CustomText style={styles.cardTitle}>{item.title}</CustomText>
                 </View>
-              </View>
-            </LinearGradient>
-          </Pressable>
-        )}
+              </LinearGradient>
+            </Pressable>
+          );
+        }}
         contentContainerStyle={styles.listContainer}
-        numColumns={2} // 2열로 설정
+        numColumns={2}
       />
     </View>
   );
 }
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = (width * 0.5) - 15; // 2열 카드 너비 설정
-const CARD_HEIGHT = CARD_WIDTH * 0.75; // 카드 높이 설정
+const CARD_WIDTH = width * 0.43;
+const CARD_HEIGHT = CARD_WIDTH * 0.97;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  headerContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerIcon: {
-    width: 150,
-    height: 150,
+    backgroundColor: '#F5F6FA',
   },
   listContainer: {
     paddingHorizontal: 10,
-    paddingBottom: 10,
-    alignItems: 'center',
+    paddingBottom: 20,
+    justifyContent: 'center',
   },
   card: {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
-    borderRadius: 5,
+    borderRadius: 15,
     overflow: 'hidden',
-    marginVertical: 5,
-    marginHorizontal: 5, // 카드 간 간격 조정
+    margin: 10,
+    elevation: 5,
   },
   cardPressed: {
     opacity: 0.9,
   },
   gradient: {
     flex: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    justifyContent: 'space-between',
   },
   cardContent: {
-    flexDirection: 'column',
+    flex: 3,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  iconContainer: {
-    marginBottom: 10,
-  },
-  cardIcon: {
-    width: 35,
-    height: 35,
+  cardFooter: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 5,
   },
   cardTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 3,
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
     textAlign: 'center',
-  },
-  cardDescription: {
-    fontSize: 14,
-    color: '#f3f3f3',
-    textAlign: 'center',
-    fontFamily: 'DepartureMono',
   },
 });

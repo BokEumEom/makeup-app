@@ -1,72 +1,104 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import CustomText from '@/components/common/CustomText';
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { Link } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { LucideProps } from "lucide-react-native";
+import CustomText from "@/components/common/CustomText";
 
 type DashboardCardProps = {
   title: string;
   subtitle: string;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: React.FC<LucideProps>;
   colors: [string, string];
   link: string | { pathname: string; params?: Record<string, string> };
+  iconColor?: string;
 };
 
-const DashboardCard: React.FC<DashboardCardProps> = ({ title, subtitle, icon, colors, link }) => (
-  <Link href={link} asChild>
-    <TouchableOpacity style={styles.card}>
-      <LinearGradient colors={colors} style={styles.cardBackground}>
-        <View style={styles.iconContainer}>
-          <Ionicons name={icon} size={24} color="#fff" />
-        </View>
-        <View style={styles.cardContent}>
-          <CustomText style={styles.cardTitle}>{title}</CustomText>
-          <CustomText style={styles.cardSubtitle}>{subtitle}</CustomText>
-        </View>
-      </LinearGradient>
-    </TouchableOpacity>
-  </Link>
-);
+const DashboardCard: React.FC<DashboardCardProps> = ({
+  title,
+  subtitle,
+  icon: Icon,
+  colors,
+  link,
+  iconColor = "#FFFFFF",
+}) => {
+  // `link`를 올바른 `href` 형태로 변환
+  const href =
+    typeof link === "string"
+      ? link // 문자열로 전달
+      : {
+          pathname: link.pathname,
+          query: link.params || {}, // params를 query로 전달
+        };
+
+  return (
+    <Link
+      href={href as any} // 타입을 강제로 맞춤
+      asChild
+    >
+      <TouchableOpacity
+        style={styles.card}
+        activeOpacity={0.9}
+        accessibilityLabel={`${title} 카드`}
+        accessibilityHint={`${subtitle} 링크로 이동합니다.`}
+      >
+        <LinearGradient
+          colors={colors}
+          style={styles.cardBackground}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <View style={styles.iconContainer}>
+            <Icon size={40} color={iconColor} />
+          </View>
+          <View style={styles.textContainer}>
+            <CustomText style={styles.cardTitle}>{title}</CustomText>
+            <CustomText style={styles.cardSubtitle}>{subtitle}</CustomText>
+          </View>
+        </LinearGradient>
+      </TouchableOpacity>
+    </Link>
+  );
+};
+
+const { width } = Dimensions.get("window");
+const CARD_WIDTH = width * 0.45;
+const CARD_HEIGHT = CARD_WIDTH * 0.65;
 
 const styles = StyleSheet.create({
   card: {
-    width: '48%', // Flex-based width for consistent grid spacing
-    aspectRatio: 1.2,
-    marginBottom: 10,
-    borderRadius: 20,
-    overflow: 'hidden',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    borderRadius: 15,
+    overflow: "hidden",
+    marginBottom: 15,
+    elevation: 5,
   },
   cardBackground: {
     flex: 1,
     padding: 15,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
   },
-  cardContent: {
+  textContainer: {
     marginTop: 10,
   },
   cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 5,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
   cardSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 14,
+    color: "#FFFFFF",
+    opacity: 0.9,
   },
 });
 

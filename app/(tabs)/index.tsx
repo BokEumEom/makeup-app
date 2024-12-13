@@ -4,6 +4,7 @@ import Header from '@/components/home/Header';
 import ProgressSection from '@/components/home/ProgressSection';
 import ResignationBanner from '@/components/home/ResignationBanner';
 import DashboardGrid from '@/components/home/DashboardGrid';
+import VideoSection from '@/components/home/VideoSection';
 
 export default function HomeScreen() {
   return (
@@ -12,6 +13,7 @@ export default function HomeScreen() {
       <ProgressSection />
       <ResignationBanner />
       <DashboardGrid />
+      <VideoSection />
     </View>
   );
 }
@@ -19,7 +21,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingTop: 60,
     backgroundColor: '#F5F5F5',
   },

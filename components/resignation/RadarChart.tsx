@@ -9,7 +9,7 @@ type RadarChartProps = {
 
 const RadarChart: React.FC<RadarChartProps> = ({ data, maxValue }) => {
   const { labels, values } = data;
-  const chartSize = Dimensions.get('window').width - 60;
+  const chartSize = Dimensions.get('window').width - 50;
   const radius = chartSize / 2;
   const angleSlice = (2 * Math.PI) / labels.length;
 
@@ -22,8 +22,8 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, maxValue }) => {
 
   const getLabelCoordinates = (index: number) => {
     const angle = angleSlice * index - Math.PI / 2;
-    const x = radius + (radius + 30) * Math.cos(angle);
-    const y = radius + (radius + 30) * Math.sin(angle);
+    const x = radius + (radius - 25) * Math.cos(angle);
+    const y = radius + (radius - 25) * Math.sin(angle);
     return { x, y };
   };
 

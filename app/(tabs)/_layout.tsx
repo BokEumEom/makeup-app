@@ -18,14 +18,6 @@ export default function TabLayout() {
   useEffect(() => {
     const loadAssets = async () => {
       const images = [
-        require('@/assets/images/weather/clear.png'),
-        require('@/assets/images/weather/rain.png'),
-        require('@/assets/images/weather/thunderstorm.png'),
-        require('@/assets/images/weather/clouds.png'),
-        require('@/assets/images/weather/snow.png'),
-        require('@/assets/images/weather/drizzle.png'),
-        require('@/assets/images/weather/haze.png'),
-        require('@/assets/images/weather/mist.png'),
         require('@/assets/game-images/rock-led.png'),
         require('@/assets/game-images/scissors-led.png'),
         require('@/assets/game-images/paper-led.png'),
@@ -35,6 +27,10 @@ export default function TabLayout() {
         require('@/assets/bg/bg_mbti_question.png'),
         require('@/assets/bg/bg_question.png'),
         require('@/assets/images/splash.png'),
+        require('@/assets/images/soran-logo.png'),
+        require('@/assets/images/sowii.png'),
+        require('@/assets/images/soran.gif'),
+        require('@/assets/images/soran-logo.gif'),
       ];
       await cacheImages(images);
       setIsReady(true);
@@ -56,6 +52,12 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        tabBarLabelStyle: {
+          marginTop: 5, // Adjust the space between the icon and title
+        },
+        tabBarItemStyle: {
+          paddingVertical: 5, // Add vertical padding around the tab items
+        },
       }}>
       <Tabs.Screen
         name="index"

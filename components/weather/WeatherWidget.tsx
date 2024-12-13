@@ -2,8 +2,19 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getWeather } from '@/services/weather.service';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+  Sun,
+  CloudRain,
+  Cloud,
+  Snowflake,
+  CloudLightning,
+  CloudDrizzle,
+  CloudFog,
+  CloudSun,
+  LucideProps,
+} from 'lucide-react-native';
 
 const WeatherWidget: React.FC = () => {
   const [hasPermission, setHasPermission] = useState(false);
@@ -70,36 +81,36 @@ const WeatherWidget: React.FC = () => {
 
   const mainWeather = data.weather && data.weather[0] ? data.weather[0].main : 'Clear';
 
-  const getWeatherStyle = (main: string) => {
+  const getWeatherStyle = (main: string): { colors: [string, string]; icon: React.FC<LucideProps> } => {
     switch (main) {
       case 'Rain':
-        return { backgroundColor: '#4A90E2', icon: 'weather-rainy' as const };
+        return { colors: ['#6EB1F7', '#4A90E2'], icon: CloudRain };
       case 'Clear':
-        return { backgroundColor: '#FDB813', icon: 'weather-sunny' as const };
+        return { colors: ['#FFDEAB', '#FDB813'], icon: Sun };
       case 'Clouds':
-        return { backgroundColor: '#A1A1A1', icon: 'weather-cloudy' as const };
+        return { colors: ['#C4C4C4', '#A1A1A1'], icon: Cloud };
       case 'Snow':
-        return { backgroundColor: '#00A9FF', icon: 'weather-snowy' as const };
+        return { colors: ['#B3E5FC', '#00A9FF'], icon: Snowflake };
       case 'Thunderstorm':
-        return { backgroundColor: '#616161', icon: 'weather-lightning' as const };
+        return { colors: ['#8E8E8E', '#616161'], icon: CloudLightning };
       case 'Drizzle':
-        return { backgroundColor: '#7FDBFF', icon: 'weather-hail' as const };
+        return { colors: ['#A6E3FF', '#7FDBFF'], icon: CloudDrizzle };
       case 'Mist':
       case 'Haze':
       case 'Fog':
-        return { backgroundColor: '#CCCCCC', icon: 'weather-fog' as const };
+        return { colors: ['#E0E0E0', '#CCCCCC'], icon: CloudFog };
       default:
-        return { backgroundColor: '#4A90E2', icon: 'weather-partly-cloudy' as const };
+        return { colors: ['#7FBFFF', '#4A90E2'], icon: CloudSun };
     }
-  };
+  }; 
 
-  const { backgroundColor, icon } = getWeatherStyle(mainWeather);
+  const { colors, icon: WeatherIcon } = getWeatherStyle(mainWeather);
 
   return (
-    <View style={[styles.widgetContainer, { backgroundColor }]}>
-      <MaterialCommunityIcons name={icon} size={32} color="#fff" />
+    <LinearGradient colors={colors} style={styles.widgetContainer}>
+      <WeatherIcon size={32} color="#fff" />
       <Text style={styles.tempText}>{`${Math.round(data.main.temp)}˚`}</Text>
-    </View>
+    </LinearGradient>
   );
 };
 

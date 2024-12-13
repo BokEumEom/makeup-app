@@ -1,13 +1,16 @@
-// components/common/CustomText.tsx
-
 import React from 'react';
 import { Text, TextProps, StyleSheet } from 'react-native';
 import { useFontSettingsContext } from '@/contexts/FontSettingsContext';
 
 const CustomText: React.FC<TextProps> = ({ style, ...props }) => {
-  const { fontFamily, fontSize } = useFontSettingsContext();
+  const { fontFamily = 'System', fontSize = 14 } = useFontSettingsContext() || {};
 
-  return <Text style={[styles.text, { fontFamily, fontSize }, style]} {...props} />;
+  return (
+    <Text
+      style={[styles.text, { fontFamily, fontSize }, style]}
+      {...props}
+    />
+  );
 };
 
 const styles = StyleSheet.create({

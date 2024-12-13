@@ -18,10 +18,10 @@ const Chart: React.FC<ChartProps> = ({ score }) => {
 
   // 차트 색상
   const getColor = (value: number) => {
-    if (value <= 0.25) return '#4CAF50'; // 초록색
-    if (value <= 0.5) return '#FFC107'; // 노란색
-    if (value <= 0.75) return '#FF9800'; // 주황색
-    return '#F44336'; // 빨간색
+    if (value <= 0.25) return '#2ECC71'; // 초록색
+    if (value <= 0.5) return '#F1C40F'; // 노란색
+    if (value <= 0.75) return '#E67E22'; // 주황색
+    return '#E74C3C'; // 빨간색
   };
 
   return (
@@ -29,18 +29,18 @@ const Chart: React.FC<ChartProps> = ({ score }) => {
       <Text style={styles.title}>퇴사 게이지</Text>
       <ProgressChart
         data={data}
-        width={Dimensions.get('window').width - 40} // 화면 너비에 맞게
-        height={220}
-        strokeWidth={16}
-        radius={32}
+        width={Dimensions.get('window').width - 60} // 화면 너비에 맞게
+        height={230}
+        strokeWidth={12}
+        radius={50}
         chartConfig={{
           backgroundGradientFrom: '#fff',
           backgroundGradientTo: '#fff',
           color: () => getColor(percentage),
           labelColor: () => '#333',
-          decimalPlaces: 2,
+          decimalPlaces: 0,
         }}
-        hideLegend={false} // 라벨 표시 여부
+        hideLegend={true} // 라벨 숨기기
       />
       <Text style={styles.percentageText}>{Math.round(percentage * 100)}%</Text>
     </View>
@@ -51,18 +51,26 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     marginVertical: 20,
+    padding: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#333',
+    marginBottom: 15,
+    color: '#2C3E50',
   },
   percentageText: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    marginTop: 15,
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#34495E',
   },
 });
 

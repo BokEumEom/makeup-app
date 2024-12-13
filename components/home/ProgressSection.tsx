@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 14,
-    backgroundColor: '#E6E6E6',
+    backgroundColor: '#ffd1ff',
     borderRadius: 10,
     overflow: 'hidden',
   },
   progress: {
     width: '45%',
     height: '100%',
-    backgroundColor: '#FF9800',
+    backgroundColor: '#96e6a1',
   },
   progressText: {
     fontSize: 12,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#a6c1ee',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 10,
