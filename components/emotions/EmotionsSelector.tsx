@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+// components/emotions/EmotionsSelector.tsx
+import React, { useState } from 'react';
+import { View, StyleSheet, Dimensions, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withSpring,
   interpolate,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
@@ -85,6 +85,13 @@ export default function EmotionsSlider() {
     translateX.value = event.contentOffset.x / SCREEN_WIDTH;
   });
 
+  // 스크롤 종료 시 현재 페이지 인덱스 업데이트
+  const onMomentumScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offsetX / SCREEN_WIDTH);
+    setCurrentIndex(index);
+  };
+
   // 애니메이션 스타일
   const getAnimatedStyle = (index: number) => {
     return useAnimatedStyle(() => {
@@ -119,6 +126,7 @@ export default function EmotionsSlider() {
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
+        onMomentumScrollEnd={onMomentumScrollEnd}
         contentContainerStyle={{ paddingHorizontal: (SCREEN_WIDTH - 500) / 2 }}
       >
         {emotions.map((emotion, index) => (
@@ -163,7 +171,7 @@ const styles = StyleSheet.create({
   slide: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: SCREEN_WIDTH, // 슬라이더의 너비를 화면 너비로 맞춤
+    width: SCREEN_WIDTH,
   },
   gradient: {
     borderRadius: 15,
@@ -171,8 +179,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     padding: 20,
-    width: SCREEN_WIDTH * 0.8, // 화면 너비의 80%로 설정
-    height: SCREEN_HEIGHT * 0.5, // 화면 높이의 50%로 설정
+    width: SCREEN_WIDTH * 0.8,
+    height: SCREEN_HEIGHT * 0.5,
   },
   title: {
     fontSize: 22,

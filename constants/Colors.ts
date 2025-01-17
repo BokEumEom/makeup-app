@@ -24,3 +24,11 @@ export const Colors = {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const GAMECOLORS = {
+  primary: '#4c669f',
+  secondary: '#FF416C',
+  background: '#000',
+  white: '#FFFFFF',
+  gray: '#f0f0f0',
+};

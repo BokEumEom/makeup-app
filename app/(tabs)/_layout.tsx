@@ -26,11 +26,25 @@ export default function TabLayout() {
         require('@/assets/game-images/paper.jpg'),
         require('@/assets/bg/bg_mbti_question.png'),
         require('@/assets/bg/bg_question.png'),
+        require('@/assets/bg/mint-bear-character-enthusiastic.webp'),
         require('@/assets/images/splash.png'),
         require('@/assets/images/soran-logo.png'),
         require('@/assets/images/sowii.png'),
         require('@/assets/images/soran.gif'),
         require('@/assets/images/soran-logo.gif'),
+        require('@/assets/meditation-images/meditating.webp'),
+        require('@/assets/meditation-images/meditate-under-tree.webp'),
+        require('@/assets/meditation-images/river.webp'),
+        require('@/assets/meditation-images/trees.webp'),
+        require('@/assets/meditation-images/waterfall.webp'),
+        require('@/assets/meditation-images/yosemite-stars.webp'),
+        require('@/assets/meditation-images/beach.webp'),
+        require('@/assets/emotions/two-chibi-characters.webp'),
+        require('@/assets/emotions/mint-bear-character.webp'),
+        require('@/assets/emotions/mint-colored-bear-character.webp'),
+        require('@/assets/emotions/mint-bear-cleansing-balm.webp'),
+        require('@/assets/emotions/mint-bear-struggling.webp'),
+        require('@/assets/emotions/mint-bear-character-balance.webp')
       ];
       await cacheImages(images);
       setIsReady(true);
@@ -64,25 +78,25 @@ export default function TabLayout() {
         options={{
           title: '홈',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon name={focused ? 'home-sharp' : 'home-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="wallpaper"
+        name="quests"
         options={{
-          title: '배경화면',
+          title: '퀘스트',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'images' : 'images-outline'} color={color} />
+            <TabBarIcon name={focused ? 'ribbon' : 'ribbon-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="animations"
+        name="dashboard"
         options={{
-          title: '애니메이션',
+          title: '대시보드',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'play-circle' : 'play-circle-outline'} color={color} />
+            <TabBarIcon name={focused ? 'pulse-sharp' : 'pulse-outline'} color={color} />
           ),
         }}
       />

@@ -63,7 +63,6 @@ export default function RootLayout() {
               <Stack.Screen name="game" />
               <Stack.Screen name="mbti" />
               <Stack.Screen name="meditate" />
-              <Stack.Screen name="(modal)/adjust-meditation-duration" options={{ presentation: "modal" }} />
               <Stack.Screen name="+not-found" />
             </Stack>
           </ThemeProvider>

@@ -1,6 +1,5 @@
 import api from './api';
 import * as Location from 'expo-location';
-import { weatherConditions } from '@/constants/WeatherConditions';
 
 export const API_KEY = '3daa5da3a284cfeb5edf9d3432c0a13b'; // Replace with your OpenWeatherMap API key
 
@@ -28,19 +27,4 @@ export const getWeather = async (lat: number, lon: number): Promise<WeatherRespo
   } catch (error) {
     throw new Error('Error fetching weather data');
   }
-};
-
-export const getWeatherBackgroundImage = async () => {
-  const location = await Location.getCurrentPositionAsync({});
-  const lat = location.coords.latitude;
-  const lon = location.coords.longitude;
-
-  const weatherData = await getWeather(lat, lon);
-  const weatherCondition = weatherData.weather[0].main;
-
-  if (weatherCondition in weatherConditions) {
-    return weatherConditions[weatherCondition as keyof typeof weatherConditions].backgroundImage;
-  }
-
-  throw new Error('Unknown weather condition');
 };

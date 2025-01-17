@@ -12,7 +12,7 @@ const ProgressSection: React.FC = () => {
   };
 
   const navigateToDashboard = () => {
-    router.push('/resignation/dashboard');
+    router.push('/(tabs)/dashboard');
   };
 
   return (

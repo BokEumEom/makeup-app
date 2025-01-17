@@ -1,3 +1,4 @@
+// contexts/TimerContext.tsx
 import {
   Dispatch,
   ReactNode,
@@ -6,13 +7,15 @@ import {
   useState,
 } from "react";
 
+const INITIAL_DURATION = 10;
+
 interface TimerContextProps {
   duration: number;
   setDuration: Dispatch<SetStateAction<number>>;
 }
 
 export const TimerContext = createContext<TimerContextProps>({
-  duration: 10,
+  duration: INITIAL_DURATION,
   setDuration: () => {},
 });
 
@@ -21,12 +24,12 @@ interface TimerProviderProps {
 }
 
 const TimerProvider = ({ children }: TimerProviderProps) => {
-  const [duration, setDuration] = useState(10);
+  const [duration, setDuration] = useState(INITIAL_DURATION);
 
   return (
-      <TimerContext.Provider value={{ duration, setDuration }}>
-          {children}
-      </TimerContext.Provider>
+    <TimerContext.Provider value={{ duration, setDuration }}>
+      {children}
+    </TimerContext.Provider>
   );
 };
 

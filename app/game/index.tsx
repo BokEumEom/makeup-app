@@ -107,7 +107,7 @@ export default function GameSelectionScreen() {
 }
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.43;
+const CARD_WIDTH = width * 0.45;
 const CARD_HEIGHT = CARD_WIDTH * 0.97;
 
 const styles = StyleSheet.create({
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: 15,
     overflow: 'hidden',
-    margin: 10,
+    margin: 5,
     elevation: 5,
   },
   cardPressed: {

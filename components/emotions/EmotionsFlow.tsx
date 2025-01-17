@@ -9,7 +9,7 @@ type EmotionsFlowProps = {
 };
 
 export default function EmotionsFlow({ emotionKey }: EmotionsFlowProps) {
-  const emotion = emotionsData[emotionKey as keyof typeof emotionsData]; // Use type assertion here
+  const emotion = emotionsData[emotionKey as keyof typeof emotionsData]; 
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [conclusion, setConclusion] = useState('');
@@ -44,6 +44,7 @@ export default function EmotionsFlow({ emotionKey }: EmotionsFlowProps) {
     <QuestionSection
       section={emotion.sections[currentSectionIndex]}
       onNext={handleNextSection}
+      emotionKey={emotionKey} // emotionKey 전달
     />
   );
 }

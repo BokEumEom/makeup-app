@@ -22,19 +22,19 @@ export default function ResultSection({ conclusion, onLearnMore }: ResultSection
       <CustomText style={styles.conclusion}>{conclusion}</CustomText>
 
       <TouchableOpacity style={styles.button} onPress={onLearnMore}>
-        <LinearGradient colors={['#F4A261', '#E76F51']} style={styles.gradient}>
+        <LinearGradient colors={['#FFCDD2', '#FFCDD2']} style={styles.gradient}>
           <CustomText style={styles.buttonText}>내면 더 알아보기</CustomText>
         </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => router.push('/emotions')}>
-        <LinearGradient colors={['#FFB4A2', '#FF8C66']} style={styles.gradient}>
+        <LinearGradient colors={['#C8E6C9', '#C8E6C9']} style={styles.gradient}>
           <CustomText style={styles.buttonText}>다른 상태 선택</CustomText>
         </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleGoHome}>
-        <LinearGradient colors={['#FFE4C4', '#FFADAD']} style={styles.gradient}>
+        <LinearGradient colors={['#B3E5FC', '#B3E5FC']} style={styles.gradient}>
           <CustomText style={styles.buttonText}>홈 화면으로 이동</CustomText>
         </LinearGradient>
       </TouchableOpacity>
@@ -51,22 +51,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF1E6',
   },
   conclusion: {
-    fontSize: 22,
-    fontWeight: '500',
-    color: '#444',
+    fontSize: 24,            // 기존보다 약간 크게 설정해 주목도를 높임
+    fontWeight: 'bold',       // 적당히 굵은 폰트로 강조
+    color: '#222',           // 진한 톤으로 가독성 강화
     marginBottom: 40,
     textAlign: 'center',
-    paddingHorizontal: 20,
-    lineHeight: 32,
+    lineHeight: 34,
+    letterSpacing: 0.5,      // 약간의 글자 간격으로 정돈된 느낌
+  
+    // 배경을 부드럽게 강조하기 위해 투명한 흰색 박스 추가
+    paddingVertical: 20,     // 위아래로 충분한 여백을 주어 안정감 제공
+    paddingHorizontal: 30,   // 가로 여백을 주어 텍스트를 돋보이게 함
+    borderRadius: 10,        // 라운드 코너로 부드러운 느낌 강조
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#fff',
   },
+  
   button: {
     width: '85%',
     marginBottom: 20,
     borderRadius: 25,  // Rounded corners for a softer look
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
+    borderWidth: 2,
+    borderColor: '#fff',
     overflow: 'hidden',
   },
   gradient: {
@@ -77,9 +84,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: '600',
+    color: '#333',
+    fontSize: 18,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

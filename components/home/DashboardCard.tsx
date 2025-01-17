@@ -63,7 +63,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width * 0.45;
-const CARD_HEIGHT = CARD_WIDTH * 0.65;
+const CARD_HEIGHT = CARD_WIDTH * 0.68;
 
 const styles = StyleSheet.create({
   card: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: 15,
     overflow: "hidden",
-    marginBottom: 15,
+    marginBottom: 10,
     elevation: 5,
   },
   cardBackground: {
