@@ -1,20 +1,20 @@
+// app/meditate/[id].tsx
 import AppGradient from "@/components/meditate/AppGradient";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
-import { ImageBackground, Pressable, Text, View, StyleSheet } from "react-native";
+import { ImageBackground, Pressable, Text, View, StyleSheet, ActionSheetIOS, Platform, Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import CustomButton from "@/components/common/CustomButton";
 
 import MEDITATION_IMAGES from "@/constants/meditation-images";
 import { TimerContext } from "@/contexts/TimerContext";
 import { MEDITATION_DATA, AUDIO_FILES } from "@/constants/MeditationData";
 
+const INITIAL_TIMER_DURATION = 10; // 초기 시간(초)
+
 const Page = () => {
     const { id } = useLocalSearchParams();
-
-    const { duration: secondsRemaining, setDuration } =
-        useContext(TimerContext);
+    const { duration: secondsRemaining, setDuration } = useContext(TimerContext);
 
     const [isMeditating, setMeditating] = useState(false);
     const [audioSound, setSound] = useState<Audio.Sound | null>(null);
@@ -23,37 +23,35 @@ const Page = () => {
     useEffect(() => {
         let timerId: NodeJS.Timeout;
 
-        // Exit early when we reach 0
-        if (secondsRemaining === 0) {
+        // 명상 중이고 시간이 0초면 명상 종료
+        if (isMeditating && secondsRemaining === 0) {
             if (isPlayingAudio) audioSound?.pauseAsync();
             setMeditating(false);
             setPlayingAudio(false);
-            return;
         }
 
-        if (isMeditating) {
-            // Save the interval ID to clear it when the component unmounts
+        // 명상 중이고 시간이 남아있다면 1초마다 감소
+        if (isMeditating && secondsRemaining > 0) {
             timerId = setTimeout(() => {
-                setDuration(secondsRemaining - 1);
+                setDuration((prev) => prev - 1);
             }, 1000);
         }
 
-        // Clear timeout if the component is unmounted or the time left changes
         return () => {
             clearTimeout(timerId);
         };
-    }, [secondsRemaining, isMeditating]);
+    }, [secondsRemaining, isMeditating, setDuration]);
 
     useEffect(() => {
+        // 컴포넌트 언마운트 시 타이머 및 오디오 리소스 정리
         return () => {
-            setDuration(10);
+            setDuration(INITIAL_TIMER_DURATION);
             audioSound?.unloadAsync();
         };
-    }, [audioSound]);
+    }, [audioSound, setDuration]);
 
     const initializeSound = async () => {
         const audioFileName = MEDITATION_DATA[Number(id) - 1].audio;
-
         const { sound } = await Audio.Sound.createAsync(
             AUDIO_FILES[audioFileName]
         );
@@ -63,33 +61,61 @@ const Page = () => {
 
     const togglePlayPause = async () => {
         const sound = audioSound ? audioSound : await initializeSound();
-
         const status = await sound?.getStatusAsync();
 
         if (status?.isLoaded && !isPlayingAudio) {
-            await sound?.playAsync();
+            await sound.playAsync();
             setPlayingAudio(true);
         } else {
-            await sound?.pauseAsync();
+            await sound.pauseAsync();
             setPlayingAudio(false);
         }
     };
 
     async function toggleMeditationSessionStatus() {
-        if (secondsRemaining === 0) setDuration(10);
+        // 시간이 0초라면 다시 초기화
+        if (secondsRemaining === 0) {
+            setDuration(INITIAL_TIMER_DURATION);
+        }
 
-        setMeditating(!isMeditating);
-
+        setMeditating((prev) => !prev);
         await togglePlayPause();
     }
 
-    const handleAdjustDuration = () => {
-        if (isMeditating) toggleMeditationSessionStatus();
+    const showActionSheet = () => {
+        const options = ["10 seconds", "5 minutes", "10 minutes", "15 minutes", "Cancel"];
+        const durations = [10, 5 * 60, 10 * 60, 15 * 60];
 
-        router.push("/(modal)/adjust-meditation-duration");
+        ActionSheetIOS.showActionSheetWithOptions(
+            {
+                options: options,
+                cancelButtonIndex: options.length - 1,
+                title: "Adjust your meditation duration"
+            },
+            (buttonIndex) => {
+                if (buttonIndex !== options.length - 1) {
+                    setDuration(durations[buttonIndex]);
+                    // 명상 중이라면 시간 변경 후에도 명상은 계속 진행
+                    // 필요 시, 여기에서 멈추거나 다시 시작 로직을 추가할 수 있음
+                }
+            }
+        );
     };
 
-    // Format the timeLeft to ensure two digits are displayed
+    const handleAdjustDuration = () => {
+        if (Platform.OS !== "ios") {
+            // iOS가 아닌 경우 대체 UI 또는 경고 메시지 표시
+            Alert.alert("Not supported", "This feature is only available on iOS.");
+            return;
+        }
+
+        if (isMeditating) {
+            toggleMeditationSessionStatus();
+        }
+        showActionSheet();
+    };
+
+    // 시간 형식 지정
     const formattedTimeMinutes = String(
         Math.floor(secondsRemaining / 60)
     ).padStart(2, "0");
@@ -119,15 +145,20 @@ const Page = () => {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <CustomButton
-                            title="Adjust duration"
+                        <Pressable
                             onPress={handleAdjustDuration}
-                        />
-                        <CustomButton
-                            title={isMeditating ? "Stop" : "Start Meditation"}
+                            style={styles.button}
+                        >
+                            <Text style={styles.buttonText}>Adjust Duration</Text>
+                        </Pressable>
+                        <Pressable
                             onPress={toggleMeditationSessionStatus}
-                            containerStyles={styles.meditationButton}
-                        />
+                            style={[styles.button, styles.meditationButton]}
+                        >
+                            <Text style={styles.buttonText}>
+                                {isMeditating ? "Stop" : "Start Meditation"}
+                            </Text>
+                        </Pressable>
                     </View>
                 </AppGradient>
             </ImageBackground>
@@ -144,8 +175,8 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: "absolute",
-        top: 64, // top-16 in rem units
-        left: 24, // left-6 in rem units
+        top: 64,
+        left: 24,
         zIndex: 10,
     },
     timerContainer: {
@@ -154,23 +185,38 @@ const styles = StyleSheet.create({
     },
     timerWrapper: {
         alignSelf: "center",
-        backgroundColor: "#D3D3D3", // neutral-200 equivalent
-        borderRadius: 9999, // for full circle
-        width: 176, // w-44 equivalent (44 * 4 px)
-        height: 176, // h-44 equivalent (44 * 4 px)
+        backgroundColor: "#D3D3D3",
+        borderRadius: 9999,
+        width: 176,
+        height: 176,
         justifyContent: "center",
         alignItems: "center",
     },
     timerText: {
-        fontSize: 36, // text-4xl
-        color: "#000080", // blue-800 equivalent
-        fontFamily: "rmono", // custom font
+        fontSize: 36,
+        color: "#000080",
+        fontFamily: "rmono",
     },
     buttonContainer: {
-        marginBottom: 20, // mb-5
+        marginBottom: 20,
+    },
+    button: {
+        backgroundColor: "#C8E6C9",
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        borderRadius: 8,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 16,
+        elevation: 5,
+    },
+    buttonText: {
+        color: '#333',
+        fontSize: 18,
+        fontWeight: "bold",
     },
     meditationButton: {
-        marginTop: 16, // mt-4
+        marginTop: 16,
     },
 });
 

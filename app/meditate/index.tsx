@@ -1,16 +1,12 @@
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import CustomButton from "@/components/common/CustomButton";
 import AppGradient from "@/components/meditate/AppGradient";
 import { useRouter } from "expo-router";
-import Animated, {
-    FadeInDown,
-    withSpring,
-} from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
-import beachImage from "@/assets/meditation-images/beach.webp";
+import mediTating from "@/assets/meditation-images/meditating.webp";
 
 const MeditateScreen = () => {
     const router = useRouter();
@@ -18,7 +14,7 @@ const MeditateScreen = () => {
     return (
         <View style={styles.container}>
             <ImageBackground
-                source={beachImage}
+                source={mediTating}
                 resizeMode="cover"
                 style={styles.backgroundImage}
             >
@@ -28,29 +24,27 @@ const MeditateScreen = () => {
                 >
                     <SafeAreaView style={styles.safeArea}>
                         <Animated.View
-                            entering={FadeInDown.delay(300)
-                                .mass(0.5)
-                                .stiffness(80)
-                                .springify(20)}
+                            entering={FadeInDown.delay(300).stiffness(80)}
                         >
-                            <Text style={styles.title}>
-                                Simple Meditation
-                            </Text>
+                            <Text style={styles.title}>Simple Meditation</Text>
                             <Text style={styles.subtitle}>
                                 Simplifying Meditation for Everyone
                             </Text>
                         </Animated.View>
 
                         <Animated.View
-                            entering={FadeInDown.delay(300)
-                                .mass(0.5)
-                                .stiffness(80)
-                                .springify(20)}
+                            entering={FadeInDown.delay(500).stiffness(80)}
                         >
-                            <CustomButton
+                            <Pressable
+                                style={({ pressed }) => [
+                                    styles.button,
+                                    pressed && styles.buttonPressed,
+                                ]}
                                 onPress={() => router.push("/meditate/nature-meditate")}
-                                title="Get Started"
-                            />
+                                accessibilityLabel="Get Started"
+                            >
+                                <Text style={styles.buttonText}>Get Started</Text>
+                            </Pressable>
                         </Animated.View>
 
                         <StatusBar style="light" />
@@ -70,21 +64,38 @@ const styles = StyleSheet.create({
     },
     safeArea: {
         flex: 1,
-        paddingHorizontal: 4, // corresponds to `px-1` (1 * 4 = 4px padding)
+        paddingHorizontal: 16,
         justifyContent: "space-between",
     },
     title: {
         textAlign: "center",
         color: "white",
         fontWeight: "bold",
-        fontSize: 36, // corresponds to `text-4xl`
+        fontSize: 36,
     },
     subtitle: {
         textAlign: "center",
         color: "white",
-        fontSize: 24, // corresponds to `text-2xl`
-        marginTop: 12, // corresponds to `mt-3`
-        fontFamily: "regular", // Ensure the font is loaded correctly elsewhere
+        fontSize: 24,
+        marginTop: 12,
+        fontFamily: "regular",
+    },
+    button: {
+        backgroundColor: "#C8E6C9",
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        borderRadius: 8,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 16,
+    },
+    buttonPressed: {
+        backgroundColor: "#45A049", // 버튼이 눌렸을 때의 색상
+    },
+    buttonText: {
+        color: '#333',
+        fontSize: 18,
+        fontWeight: "bold",
     },
 });
 

@@ -61,7 +61,15 @@ const SettingsScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/tabs')}>
-        <CustomText style={styles.label}>기능 구현</CustomText>
+        <CustomText style={styles.label}>Tab 구현</CustomText>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/wallpaper')}>
+        <CustomText style={styles.label}>배경화면 구현</CustomText>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.item} onPress={() => router.push('/setting/animations')}>
+        <CustomText style={styles.label}>VerticalList 구현</CustomText>
       </TouchableOpacity>
 
       {/* Footer with version */}
